@@ -1,26 +1,78 @@
 {
-  "name": "SimuGuia — Cálculos e Tutoriais de Simulação",
+  "name": "SimuGuia — Tutoriais para simulações",
   "short_name": "SimuGuia",
-  "description": "Guia e tutoriais interativos de simulação por elementos finitos e CFD: 92 tipos de análise, passo a passo gerado sob medida, glossário ilustrado e calculadoras de engenharia. Funciona offline.",
+  "description": "Tutoriais de simulação para Ansys Workbench e SolidWorks Simulation: passo a passo, mensagens de erro do solver traduzidas e resolvidas, interpretação de resultados, melhorias de projeto e calculadoras. Funciona offline.",
   "id": "/simuguia/",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "portrait",
-  "background_color": "#14202B",
-  "theme_color": "#14202B",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
   "lang": "pt-BR",
   "dir": "ltr",
-  "categories": ["education", "productivity", "utilities"],
+  "categories": [
+    "education",
+    "productivity",
+    "utilities"
+  ],
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    { "name": "Catálogo de análises", "short_name": "Catálogo", "url": "./index.html?tab=cat", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Calculadoras", "short_name": "Ferramentas", "url": "./index.html?tab=tools", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Meus tutoriais", "short_name": "Salvos", "url": "./index.html?tab=saved", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+    {
+      "name": "Catálogo de análises",
+      "short_name": "Catálogo",
+      "url": "./index.html?tab=cat",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Calculadoras",
+      "short_name": "Ferramentas",
+      "url": "./index.html?tab=tools",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Meus tutoriais",
+      "short_name": "Salvos",
+      "url": "./index.html?tab=saved",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }
