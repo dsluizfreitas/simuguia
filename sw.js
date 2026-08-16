@@ -1,5 +1,5 @@
 /* SimuGuia — service worker (offline completo) */
-var CACHE = 'simuguia-v1';
+var CACHE = 'simuguia-v2';
 var ASSETS = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',
