@@ -419,7 +419,7 @@ function E(x) { return String(x == null ? '' : x).replace(/&/g, '&amp;').replace
 function vib(n) { try { if (navigator.vibrate) navigator.vibrate(n || 8); } catch (e) {} }
 
 /* ---------- armazenamento ---------- */
-var S = { prog: {}, theme: null, prog2: null, intro: 0, prg: 'ansys', last: null };
+var S = { prog: {}, theme: null, intro: 0, prg: null, last: null };
 try { var raw = localStorage.getItem('simuguia3'); if (raw) S = JSON.parse(raw); } catch (e) {}
 function save() { try { localStorage.setItem('simuguia3', JSON.stringify(S)); } catch (e) {} }
 
@@ -739,23 +739,13 @@ function openAbout() {
   });
 }
 
-/* ---------- escolha de programa (camada própria, sem histórico) ---------- */
-function closeChoice() {
-  var el = document.getElementById('choice');
-  if (el) el.remove();
-}
-function openChoice() {
-  closeChoice();
-  var el = document.createElement('div');
-  el.id = 'choice';
-  el.style.cssText = 'position:fixed;inset:0;z-index:98;background:var(--paper);overflow-y:auto;' +
-    'padding:calc(var(--sat) + 18px) 16px calc(var(--sab) + 24px)';
-  el.innerHTML =
-    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">' +
-      '<div style="flex:1"><b style="display:block;font-size:21px;font-weight:800;letter-spacing:-.03em">Com qual você vai trabalhar?</b>' +
-      '<span style="font-size:12.5px;color:var(--ink3)">Dá para trocar quando quiser</span></div>' +
-      '<button class="ib" id="chX" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
-    '</div>' +
+/* ---------- escolha de programa: conteúdo da própria tela inicial ---------- */
+var showChoice = false;
+function openChoice() { showChoice = true; renderHome(); window.scrollTo(0, 0); }
+function choiceHTML() {
+  return '<div class="wrap" style="padding-top:18px">' +
+    '<h2 class="dsp" style="font-size:25px">Com qual você vai trabalhar?</h2>' +
+    '<p style="font-size:14px;color:var(--ink2);margin:8px 0 16px;line-height:1.6">Dá para trocar quando quiser, pela pílula no alto da tela.</p>' +
     '<button class="card" id="cAnsys" style="border-color:var(--acc);border-width:2px">' +
       '<div style="display:flex;gap:12px;align-items:center"><span class="dot">A</span>' +
       '<span><b style="display:block;font-size:16px">Ansys</b>' +
@@ -769,13 +759,17 @@ function openChoice() {
       '<p class="p" style="margin:12px 0 0">Análises mais simples e relatório mais prático. ' +
       D.SW.length + ' estudos mecânicos, com os menus em português.</p></button>' +
     '<button class="row" id="cDiff" style="margin-top:8px"><span class="dot">?</span>' +
-      '<span class="tx"><span class="n1">Qual a diferença</span><span class="n2">Comparação lado a lado</span></span></button>';
-  document.body.appendChild(el);
-  function pick(p) { S.prg = p; save(); vib(); closeChoice(); renderHome(); window.scrollTo(0, 0); }
-  el.querySelector('#cAnsys').addEventListener('click', function () { pick('ansys'); });
-  el.querySelector('#cSW').addEventListener('click', function () { pick('sw'); });
-  el.querySelector('#chX').addEventListener('click', function () { vib(); closeChoice(); });
-  el.querySelector('#cDiff').addEventListener('click', function () { vib(); closeChoice(); openDiff(); });
+      '<span class="tx"><span class="n1">Qual a diferença</span><span class="n2">Comparação lado a lado</span></span></button>' +
+    (S.prg ? '<button class="btn ghost" id="cBack" style="margin-top:14px">Voltar sem trocar</button>' : '') +
+    '</div>';
+}
+function bindChoice() {
+  function pick(p) { S.prg = p; showChoice = false; save(); vib(); renderHome(); window.scrollTo(0, 0); }
+  var a = $('#cAnsys'), w = $('#cSW'), d = $('#cDiff'), b = $('#cBack');
+  if (a) a.addEventListener('click', function () { pick('ansys'); });
+  if (w) w.addEventListener('click', function () { pick('sw'); });
+  if (d) d.addEventListener('click', function () { vib(); openDiff(); });
+  if (b) b.addEventListener('click', function () { showChoice = false; vib(); renderHome(); });
 }
 
 /* ---------- busca ---------- */
@@ -828,6 +822,13 @@ $('#bsearch').addEventListener('click', function () { vib(); openSearch(); });
 /* ---------- telas principais ---------- */
 function kv(k) { return 'var(--' + k + ')'; }
 function renderHome() {
+  if (!S.prg || showChoice) {
+    $('#topsub').textContent = 'Tutoriais para simulações';
+    $('#v-home').innerHTML = choiceHTML();
+    bindChoice();
+    try { showInstall(); } catch (e) {}
+    return;
+  }
   var sw = S.prg === 'sw';
   var list = sw ? D.SW : D.ANSYS;
   $('#topsub').textContent = sw ? 'SolidWorks Simulation' : 'Ansys Workbench';
