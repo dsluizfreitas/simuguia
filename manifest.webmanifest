@@ -1,7 +1,7 @@
 {
   "name": "SimuGuia — Tutoriais para simulações",
   "short_name": "SimuGuia",
-  "description": "Tutoriais de simulação para Ansys Workbench e SolidWorks Simulation: passo a passo, mensagens de erro do solver traduzidas e resolvidas, interpretação de resultados, melhorias de projeto e calculadoras. Funciona offline.",
+  "description": "Tutoriais de simulação para Ansys Workbench e SolidWorks Simulation: passo a passo, mensagens de erro do solver traduzidas e resolvidas, interpretação de resultados, melhorias de projeto e conversor de polegadas. Funciona offline.",
   "id": "/simuguia/",
   "start_url": "./index.html",
   "scope": "./",
@@ -42,37 +42,14 @@
   ],
   "shortcuts": [
     {
-      "name": "Catálogo de análises",
-      "short_name": "Catálogo",
-      "url": "./index.html?tab=cat",
-      "icons": [
-        {
-          "src": "icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "name": "Deu erro no solver?",
+      "short_name": "Erros",
+      "url": "./index.html"
     },
     {
-      "name": "Calculadoras",
-      "short_name": "Ferramentas",
-      "url": "./index.html?tab=tools",
-      "icons": [
-        {
-          "src": "icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Meus tutoriais",
-      "short_name": "Salvos",
-      "url": "./index.html?tab=saved",
-      "icons": [
-        {
-          "src": "icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "name": "Polegada para mm",
+      "short_name": "Conversor",
+      "url": "./index.html"
     }
   ]
 }
