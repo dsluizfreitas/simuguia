@@ -1,4 +1,4 @@
-var CACHE='simuguia-v6';
+var CACHE='simuguia-v9';
 var ASSETS=['./','./index.html','./manifest.webmanifest','./favicon.png','./privacidade.html',
 './icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
 self.addEventListener('install',function(e){
