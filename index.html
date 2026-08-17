@@ -859,6 +859,7 @@ function renderHome() {
   var gc = $('#goCat');
   if (gc) gc.addEventListener('click', function () { vib(); openCatalog(); });
   $('#goErr').addEventListener('click', function () { vib(); openErrList(); });
+  try { showInstall(); } catch (e) {}
   $('#goChk').addEventListener('click', function () { vib(); openCheck(); });
 }
 
@@ -1016,6 +1017,51 @@ function openCatalog() {
   });
 }
 
+
+/* ---------- convite de instalação ---------- */
+var deferredPrompt = null;
+function isStandalone() {
+  return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+}
+function showInstall() {
+  if (isStandalone()) return;
+  var host = $('#v-home');
+  if (!host || $('#installrow')) return;
+  var b = document.createElement('div');
+  b.className = 'wrap';
+  b.id = 'installrow';
+  b.style.marginTop = '14px';
+  b.innerHTML = '<button class="row" id="btnInstall" style="border-color:var(--acc)">' +
+    '<span class="dot">↓</span><span class="tx"><span class="n1">Instalar o SimuGuia</span>' +
+    '<span class="n2">Abre em tela cheia e funciona sem internet</span></span>' +
+    '<svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg></button>';
+  host.insertBefore(b, host.firstChild);
+  $('#btnInstall').addEventListener('click', function () {
+    vib();
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () { deferredPrompt = null; var r = $('#installrow'); if (r) r.remove(); });
+    } else {
+      push({
+        t1: 'Instalar o SimuGuia', t2: 'Leva alguns segundos',
+        html: function () {
+          return '<h4 class="h4">NO ANDROID</h4><ol class="steps">' +
+            '<li><span>Abra o menu de três pontos do Chrome</span></li>' +
+            '<li><span>Toque em Instalar aplicativo, ou Adicionar à tela inicial</span></li>' +
+            '<li><span>Confirme. O ícone aparece junto dos seus outros apps</span></li></ol>' +
+            '<h4 class="h4" style="margin-top:20px">NO IPHONE</h4><ol class="steps">' +
+            '<li><span>Abra o endereço no Safari, não no Chrome</span></li>' +
+            '<li><span>Toque no botão Compartilhar, o quadrado com a seta</span></li>' +
+            '<li><span>Escolha Adicionar à Tela de Início</span></li></ol>' +
+            '<div class="tip" style="margin-top:16px">Depois de instalado, o app abre em tela cheia, sem a barra do navegador, e funciona no modo avião.</div>';
+        }
+      });
+    }
+  });
+}
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; showInstall(); });
+window.addEventListener('appinstalled', function () { var r = $('#installrow'); if (r) r.remove(); });
+
 /* ---------- abas ---------- */
 $$('#tabs button').forEach(function (b) {
   b.addEventListener('click', function () {
@@ -1030,6 +1076,7 @@ $$('#tabs button').forEach(function (b) {
 });
 
 renderHome(); renderProd(); renderTools(); renderSaved();
+showInstall();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
