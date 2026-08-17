@@ -341,7 +341,7 @@ border-radius:12px;padding:13px;margin:0 0 10px}
 justify-content:center;padding:calc(var(--sat) + 30px) 26px calc(var(--sab) + 30px);text-align:center;
 background:var(--card);transition:opacity .3s}
 #splash.out{opacity:0}
-#splash .btn{max-width:300px;width:100%;margin-top:30px;padding:16px;font-size:16px;border-radius:14px}
+#splash .btn{flex:0 0 auto;align-self:center;max-width:300px;width:100%;margin-top:30px;padding:15px 16px;font-size:16px;border-radius:14px;line-height:1.2;height:auto}
 #splash .by{position:static;margin-top:auto;padding-top:26px;font-size:13px;color:var(--ink3)}
 body.splash #top,body.splash #tabs{display:none}
 body.splash main .view{display:none}
@@ -707,6 +707,7 @@ if (_sp) {
     setTimeout(function () {
       _sp.remove();
       document.body.classList.remove('splash');
+      showChoice = true;
       renderHome(); window.scrollTo(0, 0);
     }, 300);
   });
@@ -1933,10 +1934,11 @@ function openCalcs() {
           });
           var out = t.c(v) || [];
           el.querySelector('.tres').innerHTML = out.map(function (o) {
-            return '<div class="res"><b>' + o.b + '</b>' + (o.s ? '<span>' + o.s + '</span>' : '') + '</div>';
+            var b = String(o.b).replace(/(\d)\.(\d)/g, '$1,$2');
+            return '<div class="res"><b>' + b + '</b>' + (o.s ? '<span>' + o.s + '</span>' : '') + '</div>';
           }).join('');
         }
-        el.querySelector('button').addEventListener('click', function () { el.classList.toggle('on'); vib(); calc(); });
+        el.querySelector('button').addEventListener('click', function () { el.classList.toggle('open'); vib(); calc(); });
         Array.prototype.forEach.call(el.querySelectorAll('[data-f]'), function (inp) {
           inp.addEventListener('input', calc); inp.addEventListener('change', calc);
         });
@@ -2101,17 +2103,17 @@ function choiceHTML() {
       D.SW.length + ' estudos mecânicos, com os menus em português.</p></button>' +
     '<button class="row" id="cDiff" style="margin-top:8px"><span class="dot">?</span>' +
       '<span class="tx"><span class="n1">Qual a diferença</span><span class="n2">Comparação lado a lado</span></span></button>' +
-    (S.prg ? '<button class="btn ghost" id="cBack" style="margin-top:12px">Voltar sem trocar</button>' : '') +
+
     '<p style="text-align:center;font-size:13px;color:var(--ink3);margin:26px 0 0">By Luiz Freitas</p>' +
     '</div>';
 }
 function bindChoice() {
   function pick(p) { S.prg = p; showChoice = false; save(); vib(); renderHome(); window.scrollTo(0, 0); }
-  var a = $('#cAnsys'), w = $('#cSW'), d = $('#cDiff'), b = $('#cBack');
+  var a = $('#cAnsys'), w = $('#cSW'), d = $('#cDiff');
   if (a) a.addEventListener('click', function () { pick('ansys'); });
   if (w) w.addEventListener('click', function () { pick('sw'); });
   if (d) d.addEventListener('click', function () { vib(); openDiff(); });
-  if (b) b.addEventListener('click', function () { showChoice = false; vib(); renderHome(); });
+
 }
 
 /* ---------- busca ---------- */
