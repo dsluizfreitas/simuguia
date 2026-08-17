@@ -739,28 +739,43 @@ function openAbout() {
   });
 }
 
-/* ---------- escolha de programa ---------- */
+/* ---------- escolha de programa (camada própria, sem histórico) ---------- */
+function closeChoice() {
+  var el = document.getElementById('choice');
+  if (el) el.remove();
+}
 function openChoice() {
-  push({
-    t1: 'Com qual você vai trabalhar?', t2: 'Dá para trocar quando quiser',
-    html: function () {
-      return '<button class="card" id="cAnsys" style="border-color:var(--acc);border-width:2px">' +
-        '<div style="display:flex;gap:12px;align-items:center"><span class="dot">A</span>' +
-        '<span><b style="display:block;font-size:16px">Ansys</b><span style="font-size:12.5px;color:var(--ink3)">Workbench · Mechanical · Fluent</span></span></div>' +
-        '<p class="p" style="margin:12px 0 0">Análises mais complexas e relatório mais intencional. ' + D.ANSYS.length + ' análises principais, com o passo a passo completo de cada uma.</p></button>' +
-        '<button class="card" id="cSW"><div style="display:flex;gap:12px;align-items:center">' +
-        '<span class="dot" style="background:#E6F1FB;color:#185FA5">S</span>' +
-        '<span><b style="display:block;font-size:16px">SolidWorks Simulation</b><span style="font-size:12.5px;color:var(--ink3)">só a parte mecânica</span></span></div>' +
-        '<p class="p" style="margin:12px 0 0">Análises mais simples e relatório mais prático. ' + D.SW.length + ' estudos mecânicos, com os menus em português.</p></button>' +
-        '<button class="row" id="cDiff" style="margin-top:14px"><span class="dot">?</span>' +
-        '<span class="tx"><span class="n1">Qual a diferença</span><span class="n2">Comparação lado a lado</span></span></button>';
-    },
-    bind: function () {
-      $('#cAnsys').addEventListener('click', function () { S.prg = 'ansys'; save(); vib(); history.back(); setTimeout(renderHome, 60); });
-      $('#cSW').addEventListener('click', function () { S.prg = 'sw'; save(); vib(); history.back(); setTimeout(renderHome, 60); });
-      $('#cDiff').addEventListener('click', function () { vib(); openDiff(); });
-    }
-  });
+  closeChoice();
+  var el = document.createElement('div');
+  el.id = 'choice';
+  el.style.cssText = 'position:fixed;inset:0;z-index:98;background:var(--paper);overflow-y:auto;' +
+    'padding:calc(var(--sat) + 18px) 16px calc(var(--sab) + 24px)';
+  el.innerHTML =
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">' +
+      '<div style="flex:1"><b style="display:block;font-size:21px;font-weight:800;letter-spacing:-.03em">Com qual você vai trabalhar?</b>' +
+      '<span style="font-size:12.5px;color:var(--ink3)">Dá para trocar quando quiser</span></div>' +
+      '<button class="ib" id="chX" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
+    '</div>' +
+    '<button class="card" id="cAnsys" style="border-color:var(--acc);border-width:2px">' +
+      '<div style="display:flex;gap:12px;align-items:center"><span class="dot">A</span>' +
+      '<span><b style="display:block;font-size:16px">Ansys</b>' +
+      '<span style="font-size:12.5px;color:var(--ink3)">Workbench · Mechanical · Fluent</span></span></div>' +
+      '<p class="p" style="margin:12px 0 0">Análises mais complexas e relatório mais intencional. ' +
+      D.ANSYS.length + ' análises principais com passo a passo completo, mais o catálogo de ' + D.CATALOG.length + '.</p></button>' +
+    '<button class="card" id="cSW"><div style="display:flex;gap:12px;align-items:center">' +
+      '<span class="dot" style="background:#E6F1FB;color:#185FA5">S</span>' +
+      '<span><b style="display:block;font-size:16px">SolidWorks Simulation</b>' +
+      '<span style="font-size:12.5px;color:var(--ink3)">só a parte mecânica</span></span></div>' +
+      '<p class="p" style="margin:12px 0 0">Análises mais simples e relatório mais prático. ' +
+      D.SW.length + ' estudos mecânicos, com os menus em português.</p></button>' +
+    '<button class="row" id="cDiff" style="margin-top:8px"><span class="dot">?</span>' +
+      '<span class="tx"><span class="n1">Qual a diferença</span><span class="n2">Comparação lado a lado</span></span></button>';
+  document.body.appendChild(el);
+  function pick(p) { S.prg = p; save(); vib(); closeChoice(); renderHome(); window.scrollTo(0, 0); }
+  el.querySelector('#cAnsys').addEventListener('click', function () { pick('ansys'); });
+  el.querySelector('#cSW').addEventListener('click', function () { pick('sw'); });
+  el.querySelector('#chX').addEventListener('click', function () { vib(); closeChoice(); });
+  el.querySelector('#cDiff').addEventListener('click', function () { vib(); closeChoice(); openDiff(); });
 }
 
 /* ---------- busca ---------- */
@@ -896,7 +911,8 @@ function renderProd() {
 }
 
 function renderTools() {
-  var L = [['Melhore a peça', 'Seis mudanças de projeto, com o ganho medido', openImprove],
+  var L = [['Instalar o SimuGuia', 'Tela cheia, ícone próprio e uso sem internet', function () { var b = $('#btnInstall'); if (b) { b.click(); return; } askInstall(); }],
+    ['Melhore a peça', 'Seis mudanças de projeto, com o ganho medido', openImprove],
     ['Polegada para milímetro', 'Fração composta e a tabela das mais usadas', openInch],
     ['Relatório em Word', 'Passo a passo nos dois programas', openReport],
     ['Meu resultado está certo?', 'Quatro conferências antes de acreditar', openCheck],
@@ -1041,7 +1057,10 @@ function showInstall() {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then(function () { deferredPrompt = null; var r = $('#installrow'); if (r) r.remove(); });
-    } else {
+    } else { askInstall(); }
+  });
+}
+function askInstall() {
       push({
         t1: 'Instalar o SimuGuia', t2: 'Leva alguns segundos',
         html: function () {
@@ -1056,8 +1075,6 @@ function showInstall() {
             '<div class="tip" style="margin-top:16px">Depois de instalado, o app abre em tela cheia, sem a barra do navegador, e funciona no modo avião.</div>';
         }
       });
-    }
-  });
 }
 window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; showInstall(); });
 window.addEventListener('appinstalled', function () { var r = $('#installrow'); if (r) r.remove(); });
