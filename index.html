@@ -93,7 +93,7 @@ display:flex;padding-bottom:var(--sab)}
 
 /* abertura e boas-vindas */
 #splash,#intro{position:fixed;inset:0;z-index:99;background:var(--card);display:flex;flex-direction:column;
-align-items:center;justify-content:center;padding:26px;text-align:center;transition:opacity .4s}
+align-items:center;justify-content:center;padding:calc(var(--sat) + 26px) 26px calc(var(--sab) + 26px);text-align:center;transition:opacity .35s}
 #splash.out{opacity:0;pointer-events:none}
 #splash .wm{font-size:35px;font-weight:800;letter-spacing:-.04em;margin:18px 0 5px}
 #splash .tg{font-size:14px;color:var(--ink2)}
@@ -195,21 +195,8 @@ background:var(--card);border:1px solid var(--rule);width:100%}
 .btn:active{opacity:.82}
 .btn.sm{flex:0 0 auto;padding:12px 14px;font-size:13.5px}
 .btn[disabled]{opacity:.45}
-/* conteúdo do detalhe */
-.tagrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.tg{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;
-  padding:4px 8px;border-radius:6px;background:color-mix(in srgb,var(--k) 13%,transparent);color:var(--k)}
-.tg.n{background:var(--card2);color:var(--ink2)}
 .lbl{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin:20px 0 7px}
 .lbl:first-child{margin-top:0}
-.exq{background:var(--card2);border:1px dashed var(--rule);border-radius:12px;padding:14px;font-size:14.5px;color:var(--ink2)}
-.exq b{color:var(--ink)}
-.pills{display:flex;gap:6px;flex-wrap:wrap}
-.pill{font-size:12px;padding:5px 10px;border-radius:99px;background:var(--card2);border:1px solid var(--rule2);color:var(--ink2)}
-.cells{background:var(--card);border:1px solid var(--rule2);border-radius:12px;overflow:hidden}
-.cells .ct{background:var(--k);color:#fff;font-size:11.5px;font-weight:700;padding:7px 12px}
-.cells div.cl{padding:7px 12px;border-top:1px solid var(--rule2);font-size:12.5px;color:var(--ink2);display:flex;gap:9px}
-.cells div.cl b{color:var(--ink3);font-weight:600;min-width:13px}
 /* ===== assistente ===== */
 .prog{display:flex;gap:5px;padding:0 0 14px}
 .prog i{flex:1;height:4px;border-radius:2px;background:var(--rule)}
@@ -220,7 +207,7 @@ background:var(--card);border:1px solid var(--rule);width:100%}
   display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);
   border:1.5px solid var(--rule);border-radius:14px;padding:13px;margin-bottom:9px
 }
-.opt[aria-pressed="true"]{border-color:var(--k);background:var(--sunk)}
+.opt[aria-pressed="true"]{border-color:var(--k);background:var(--soft)}
 .opt .mk{flex:0 0 22px;width:22px;height:22px;border:1.5px solid var(--rule);border-radius:7px;
   display:grid;place-items:center;background:var(--card);color:#fff;font-size:13px}
 .opt[aria-pressed="true"] .mk{background:var(--k);border-color:var(--k)}
@@ -269,7 +256,7 @@ background:var(--card);border:1px solid var(--rule);width:100%}
   border:1px solid var(--rule2);border-radius:5px;padding:1px 5px;color:var(--ink);word-break:break-word}
 .stepfig{background:#fff;border:1px solid var(--rule2);border-radius:8px;padding:5px;margin:0 0 9px}
 .stepfig svg{width:100%;height:auto;display:block;color:var(--k)}
-.warn{border-left:3px solid #C2971A;background:var(--warnbg);
+.warn{border-left:3px solid #C2971A;background:var(--sunk));
   padding:12px 13px;border-radius:10px;font-size:13.5px;color:var(--ink2);margin-bottom:9px;line-height:1.5}
 .warn em{font-style:normal;font-weight:600;color:var(--ink)}
 .note{width:100%;min-height:88px;border:1px solid var(--rule);border-radius:12px;padding:12px;
@@ -278,8 +265,6 @@ background:var(--card);border:1px solid var(--rule);width:100%}
 .recap{background:var(--card2);border:1px dashed var(--rule);border-radius:12px;padding:13px;font-size:13.5px;
   color:var(--ink2);margin-bottom:6px;line-height:1.55}
 .recap b{color:var(--ink)}
-.figwrap svg,.stepfig svg,.opt .th svg{color:var(--k,var(--acc))}
-
 /* ===== leitura: blocos, hierarquia e justificação ===== */
 .p,.blk p,.expbox p,.step .sd{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
 .h4{font-size:10.5px;font-weight:800;letter-spacing:.11em;color:var(--accink);margin:0 0 8px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
@@ -320,6 +305,37 @@ color:var(--accink);font-size:11.5px;font-weight:800;display:grid;place-items:ce
 .mfig{display:block;background:var(--card);border-radius:9px;padding:6px;margin-bottom:8px}
 .mfig svg{width:100%;height:58px;display:block}
 html[data-theme="dark"] .mfig{background:rgba(255,255,255,.06)}
+#sfoot .btn{width:100%;flex:none}
+#sfoot .btn.sm{order:2}
+#sfoot .btn.pri{order:1}
+
+/* ===== passos: título e descrição em linhas separadas ===== */
+.step{display:flex;gap:11px;align-items:flex-start;width:100%;background:var(--card);
+border:1px solid var(--rule);border-radius:12px;padding:12px 13px;margin-bottom:8px;text-align:left}
+.step.done{opacity:.5}
+.step.done .st{text-decoration:line-through}
+.step .bx{flex:0 0 24px;height:24px;border-radius:8px;background:var(--soft);color:var(--accink);
+font-size:12px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+.step.done .bx{background:var(--acc);color:var(--card)}
+.step .sc{flex:1;min-width:0;display:block}
+.step .st{display:block;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:5px}
+.step .sd{display:block;font-size:13.5px;color:var(--ink2);line-height:1.6;margin-bottom:6px}
+.step .path{display:inline-block;font-family:ui-monospace,"SF Mono",Consolas,monospace;
+font-size:11.5px;background:var(--sunk);color:var(--accink);padding:4px 9px;border-radius:7px;margin-top:2px}
+.step .stepfig{display:block;margin:8px 0}
+.grp{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accink);
+background:var(--soft);border-radius:8px;padding:7px 11px;margin:20px 0 10px;display:inline-block}
+
+.optwrap{position:relative;margin-bottom:9px}
+.optwrap .opt{margin-bottom:0;padding-right:54px}
+.optwrap .expb{position:absolute;right:9px;top:50%;transform:translateY(-50%);
+width:34px;height:34px;border-radius:10px;border:1.5px solid var(--rule);background:var(--card);
+color:var(--accink);font-size:15px;font-weight:800;display:grid;place-items:center;z-index:2}
+.optwrap .expb[aria-expanded="true"]{background:var(--acc);border-color:var(--acc);color:var(--card)}
+.expbox{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--acc);
+border-radius:12px;padding:13px;margin:0 0 10px}
+.expbox p{margin:0 0 8px;font-size:13.5px;line-height:1.6;color:var(--ink2);text-align:justify}
+.expbox p:last-child{margin:0}
 </style>
 </head>
 <body>
@@ -502,6 +518,7 @@ html[data-theme="dark"] .mfig{background:rgba(255,255,255,.06)}
   <div class="wm">SimuGuia</div>
   <div class="tg">Tutoriais para simulações</div>
   <div class="pg">para Ansys Workbench &amp; SolidWorks Simulation</div>
+  <button class="btn" id="splashGo" style="max-width:320px;margin-top:30px">Avançar</button>
   <div class="by">By Luiz Freitas</div>
 </div>
 
@@ -539,7 +556,7 @@ border-radius:20px;padding:7px 12px;font-size:12px;font-weight:700;margin-right:
     <button class="ib" id="sfav" style="display:none" aria-label="Favoritar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6.1L12 16.8 6.7 19.7l1.1-6.1L3.4 9.4l6-.8z"/></svg></button>
   </div>
   <div id="sbody"></div>
-  <div id="sfoot" style="display:none;padding:12px 16px calc(var(--sab) + 12px);background:var(--card);border-top:1px solid var(--rule);gap:8px"></div>
+  <div id="sfoot" style="display:none;padding:12px 16px calc(var(--sab) + 12px);background:var(--card);border-top:1px solid var(--rule);gap:8px;flex-direction:column"></div>
 </div>
 
 <nav id="tabs">
@@ -568,10 +585,32 @@ function save() { try { localStorage.setItem('simuguia3', JSON.stringify(S)); } 
 /* ---------- tema ---------- */
 var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6l-1.5 1.5"/></svg>';
 var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>';
+var PROGC = {
+  ansys: {acc:'#F5B700', soft:'#FDF3D2', ink:'#5C4400', dark:'#111418'},
+  sw:    {acc:'#D0271D', soft:'#FCE9E7', ink:'#8F1912', dark:'#FFFFFF'}
+};
+var PROGD = {
+  ansys: {acc:'#F5C542', soft:'#3A2E05', ink:'#F5C542'},
+  sw:    {acc:'#F08B82', soft:'#3A1210', ink:'#F08B82'}
+};
+function applyProg() {
+  var r = document.documentElement, dark = r.getAttribute('data-theme') === 'dark';
+  if (!S.prg) {
+    r.style.removeProperty('--acc'); r.style.removeProperty('--soft');
+    r.style.removeProperty('--accink'); r.style.removeProperty('--k');
+    return;
+  }
+  var c = dark ? PROGD[S.prg] : PROGC[S.prg];
+  r.style.setProperty('--acc', c.acc);
+  r.style.setProperty('--soft', c.soft);
+  r.style.setProperty('--accink', c.ink);
+  r.style.setProperty('--k', c.acc);
+}
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
   $('#btheme').innerHTML = t === 'dark' ? SUN : MOON;
   var m = $('#tcolor'); if (m) m.setAttribute('content', t === 'dark' ? '#0B1116' : '#FFFFFF');
+  try { applyProg(); } catch (e) {}
 }
 applyTheme(S.theme || 'light');
 $('#btheme').addEventListener('click', function () {
@@ -604,14 +643,15 @@ $('#inext').addEventListener('click', function () {
   if (istep < 2) { istep++; paintIntro(); }
   else { S.intro = 1; save(); $('#intro').classList.remove('on'); openChoice(); }
 });
-setTimeout(function () {
-  var sp = $('#splash'); if (!sp) return;
-  sp.classList.add('out');
-  setTimeout(function () {
-    sp.remove();
-    renderHome();
-  }, 420);
-}, 2000);
+var _sp = $('#splash');
+if (_sp) {
+  var _go = document.getElementById('splashGo');
+  if (_go) _go.addEventListener('click', function () {
+    vib();
+    _sp.classList.add('out');
+    setTimeout(function () { _sp.remove(); renderHome(); window.scrollTo(0, 0); }, 360);
+  });
+}
 
 /* ---------- pilha ---------- */
 var STACK = [];
@@ -1319,11 +1359,11 @@ function resultsFor(en,it){
 var W={};
 function openWizard(en,pre){
   var it=BY[en];
-  W={en:en,k:it.k,step:1,have:null,shape:null,res:[],exp:null};
-  if(pre){W.have=pre.have;W.shape=pre.shape;W.res=pre.res.slice();}
+  W={en:en,k:it.k,step:2,have:'cad',shape:null,res:[],exp:null};
+  if(pre){W.have=pre.have||'cad';W.shape=pre.shape;W.res=pre.res.slice();}
   push({k:it.k,t1:en,t2:'Montando seu tutorial',html:wizHTML,foot:wizFoot,bind:wizBind});
 }
-function steps(){ return (W.have==='build'&&shapesFor(W.en,W.k).length)?3:2; }
+function steps(){ return 2; }
 function wizHTML(){
   var it=BY[W.en], tot=steps(), h='';
   h+='<div class="prog">';
@@ -1346,6 +1386,7 @@ function wizHTML(){
     h+='</div>';
   } else {
     var res=resultsFor(W.en,it);
+    h+='<div class="tip" style="margin-bottom:16px">Este tutorial parte da peça já modelada. Tenha em mãos o arquivo em STEP, IGES, Parasolid ou o nativo do seu CAD.</div>';
     h+='<p class="qz">O que você quer descobrir?</p><p class="qs">Marque tudo que interessa. O tutorial trará o passo exato para extrair cada um. Toque em <b>?</b> para entender o que cada resultado significa.</p><div id="ow">';
     var REP=res.length;
     res.forEach(function(r,i){
@@ -1366,7 +1407,7 @@ function wizHTML(){
 }
 function wizFoot(){
   var tot=steps(), last=(W.step>=tot);
-  return (W.step>1?'<button class="btn sm" id="wback">Voltar</button>':'')+
+  return (W.step>2?'<button class="btn sm" id="wback">Voltar</button>':'')+
    '<button class="btn pri" id="wnext">'+(last?'Gerar meu tutorial':'Continuar')+'</button>';
 }
 function wizBind(){
@@ -1530,39 +1571,31 @@ function bindAnalysis(a) {
 }
 function openSWWizard(a) {
   var res = (D.SWRES && D.SWRES[a.id]) ? D.SWRES[a.id] : [];
-  var sel = res.map(function (_, i) { return i; });
+  var open = -1, rep = true;
   push({
-    t1: a.n, t2: 'O que você quer descobrir?', k: a.k,
+    t1: a.n, t2: 'O que você obterá', k: a.k,
     html: function () {
-      return '<div class="qz">Estudo ' + E(a.n) + '</div>' +
-        '<div class="qs">O que você quer obter?</div>' +
-        '<div class="optwrap">' + res.map(function (r, i) {
-          return '<button class="opt' + (sel.indexOf(i) >= 0 ? ' mk' : '') + '" data-i="' + i + '">' +
-            '<span class="ot">' + E(r[0]) + '</span>' +
-            '<span class="expb" data-e="' + i + '" aria-label="O que é isto">?</span>' +
-            '<span class="expbox" id="ex' + i + '" style="display:none">' + E(r[2]) + '</span></button>';
-        }).join('') + '</div>' +
-        '<div class="tip">Marque o que interessa. O passo a passo vem só com o que serve para o seu caso — a peça já modelada é o ponto de partida.</div>';
+      var h = '<div class="tip" style="margin-bottom:16px">Este tutorial parte da peça já modelada no SolidWorks. Tenha o arquivo aberto antes de começar.</div>';
+      h += '<p class="qz">O que você obterá</p><p class="qs">O SolidWorks entrega estes resultados de uma vez neste estudo. Toque em <b>?</b> para entender cada um antes de começar.</p>';
+      h += '<div id="ow">' + res.map(function (r, i) {
+        return '<div class="optwrap"><button class="opt" data-i="' + i + '" aria-pressed="true"><span class="mk"></span>' +
+          '<span class="ot"><b>' + E(r[0]) + '</b></span></button>' +
+          '<button class="expb" data-x="' + i + '" aria-expanded="' + (open === i) + '" aria-label="O que é isso">?</button></div>' +
+          (open === i ? '<div class="expbox"><p><b>Como se extrai.</b> ' + E(r[1]) + '</p><p><b>Como se lê.</b> ' + E(r[2]) + '</p></div>' : '');
+      }).join('') + '</div>';
+      h += '<div class="optwrap" style="margin-top:14px"><button class="opt' + (rep ? ' mk' : '') + '" id="swrep">' +
+        '<span class="mk"></span><span class="ot"><b>Gerar relatório em Word</b><span>acrescenta o passo a passo do documento no fim</span></span></button></div>';
+      return h;
     },
     foot: function () { return '<button class="btn pri" id="swGo" style="flex:1">Montar o passo a passo</button>'; },
     bind: function () {
-      $$('#sbody .opt').forEach(function (b) {
-        b.addEventListener('click', function (ev) {
-          var i = parseInt(b.getAttribute('data-i'), 10);
-          if (ev.target && ev.target.classList.contains('expb')) {
-            var box = document.getElementById('ex' + i);
-            box.style.display = box.style.display === 'none' ? 'block' : 'none';
-            ev.stopPropagation(); return;
-          }
-          var p = sel.indexOf(i);
-          if (p >= 0) sel.splice(p, 1); else sel.push(i);
-          b.classList.toggle('mk', sel.indexOf(i) >= 0); vib();
-        });
+      $$('#sbody .expb').forEach(function (b) {
+        b.addEventListener('click', function () { var i = +b.getAttribute('data-x'); open = (open === i ? -1 : i); vib(); paintStack(); });
       });
+      var rb = $('#swrep');
+      if (rb) rb.addEventListener('click', function () { rep = !rep; rb.classList.toggle('mk', rep); vib(); });
       $('#swGo').addEventListener('click', function () {
-        var real = sel.filter(function (x) { return x >= 0; });
-        if (!real.length) { vib(30); return; }
-        vib(); openSWTut(a, real.sort(function (x, y) { return x - y; }), sel.indexOf(-1) >= 0);
+        vib(); openSWTut(a, res.map(function (_, i) { return i; }), rep);
       });
     }
   });
@@ -1728,7 +1761,7 @@ function openProduct(p) {
         '<h4 class="h4">O que dá para calcular</h4>' +
         (S.prg === 'sw'
           ? swCalcs(p).map(function (q, i) {
-              return '<button class="pick" data-i="' + i + '" style="--k:#185FA5;width:100%">' +
+              return '<button class="pick" data-i="' + i + '" style="--k:var(--acc);width:100%">' +
                 '<span class="q">' + E(q[0]) + '</span><span class="pill b">' + E(q[1].n) + '</span>' +
                 '<span style="display:block;margin-top:7px;font-size:12px;color:#185FA5;font-weight:600">ver como calcular ›</span></button>';
             }).join('')
@@ -2023,18 +2056,19 @@ function renderHome() {
   if (!S.prg || showChoice) {
     $('#topsub').textContent = 'Tutoriais para simulações';
     $('#bprog').style.display = 'none';
+    applyProg();
     $('#v-home').innerHTML = choiceHTML();
     bindChoice();
-    try { showInstall(); } catch (e) {}
     return;
   }
   var sw = S.prg === 'sw';
+  applyProg();
   var list = sw ? D.SW : D.ANSYS;
   $('#topsub').textContent = sw ? 'SolidWorks Simulation' : 'Ansys Workbench';
   $('#bprog').style.display = 'flex';
   $('#bprogtx').textContent = sw ? 'SolidWorks' : 'Ansys';
-  $('#bprog').style.background = sw ? '#E6F1FB' : 'var(--soft)';
-  $('#bprog').style.color = sw ? '#185FA5' : 'var(--accink)';
+  $('#bprog').style.background = 'var(--soft)';
+  $('#bprog').style.color = 'var(--accink)';
   var h = '';
   h += '<div class="wrap" style="padding-top:14px"><h2 class="dsp" style="font-size:23px">' +
     (sw ? 'O que o SolidWorks Simulation calcula' : 'O que o Ansys calcula') + '</h2>' +
@@ -2086,8 +2120,6 @@ function renderHome() {
   var gc = $('#goCat');
   if (gc) gc.addEventListener('click', function () { vib(); openCatalog(); });
   $('#goErr').addEventListener('click', function () { vib(); openErrList(); });
-  try { showInstall(); } catch (e) {}
-  try { showInstall(); } catch (e) {}
 
 }
 
@@ -2250,42 +2282,6 @@ function openCatalog() {
 }
 
 
-/* ---------- convite de instalação ---------- */
-var deferredPrompt = null;
-function isStandalone() {
-  return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-}
-function showInstall() {
-  if (isStandalone()) return;
-  var host = $('#v-home');
-  if (!host || $('#installrow')) return;
-  var b = document.createElement('div');
-  b.className = 'wrap'; b.id = 'installrow'; b.style.marginTop = '14px';
-  b.innerHTML = '<button class="row" id="btnInstall" style="border-color:var(--acc)">' +
-    '<span class="dot">&#8595;</span><span class="tx"><span class="n1">Instalar o SimuGuia</span>' +
-    '<span class="n2" id="insub">Abre em tela cheia e funciona sem internet</span></span></button>';
-  host.appendChild(b);
-  $('#btnInstall').addEventListener('click', function () {
-    vib();
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function () {
-        deferredPrompt = null;
-        var r = $('#installrow'); if (r) r.remove();
-      });
-      return;
-    }
-    var sub = $('#insub');
-    if (sub) {
-      sub.textContent = 'Toque no menu de três pontos do Chrome e escolha Instalar aplicativo';
-      sub.style.color = 'var(--accink)';
-      sub.style.fontWeight = '600';
-    }
-  });
-}
-window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; showInstall(); });
-window.addEventListener('appinstalled', function () { deferredPrompt = null; var r = $('#installrow'); if (r) r.remove(); });
-
 /* ---------- abas ---------- */
 $$('#tabs button').forEach(function (b) {
   b.addEventListener('click', function () {
@@ -2300,7 +2296,6 @@ $$('#tabs button').forEach(function (b) {
 });
 
 renderHome(); renderProd(); renderTools(); renderSaved();
-showInstall();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
