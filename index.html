@@ -97,7 +97,7 @@ align-items:center;justify-content:center;padding:calc(var(--sat) + 26px) 26px c
 #splash.out{opacity:0;pointer-events:none}
 #splash .wm{font-size:35px;font-weight:800;letter-spacing:-.04em;margin:18px 0 5px}
 #splash .tg{font-size:14px;color:var(--ink2)}
-#splash .pg{margin-top:18px;background:var(--soft);color:var(--accink);border-radius:20px;padding:8px 16px;font-size:11.5px;line-height:1.4}
+#splash .pg{margin-top:18px;background:var(--soft);color:var(--brandred,#C8322B);border-radius:20px;padding:8px 16px;font-size:11.5px;line-height:1.4;font-weight:600}
 #splash .by,#intro .by{position:absolute;bottom:calc(var(--sab) + 22px);font-size:13px;color:var(--ink3)}
 #intro{display:none;justify-content:flex-start;padding:calc(var(--sat) + 40px) 24px calc(var(--sab) + 24px)}
 #intro.on{display:flex}
@@ -341,10 +341,48 @@ border-radius:12px;padding:13px;margin:0 0 10px}
 justify-content:center;padding:calc(var(--sat) + 30px) 26px calc(var(--sab) + 30px);text-align:center;
 background:var(--card);transition:opacity .3s}
 #splash.out{opacity:0}
-#splash .btn{max-width:210px;margin-top:28px}
+#splash .btn{max-width:300px;width:100%;margin-top:30px;padding:16px;font-size:16px;border-radius:14px}
 #splash .by{position:static;margin-top:auto;padding-top:26px;font-size:13px;color:var(--ink3)}
 body.splash #top,body.splash #tabs{display:none}
 body.splash main .view{display:none}
+
+.row .ic{flex:0 0 36px;width:36px;height:36px;border-radius:9px;display:grid;place-items:center;
+  color:var(--k);background:color-mix(in srgb,var(--k) 12%,transparent)}
+.row .ic svg{width:21px;height:21px}
+.pk .ic{flex:0 0 30px;color:var(--k);margin-top:1px}
+.pk .ic svg{width:24px;height:24px}
+/* ===== ferramentas ===== */
+.tool{background:var(--card);border:1px solid var(--rule2);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.tool>button{width:100%;display:flex;gap:11px;align-items:center;padding:14px 13px;text-align:left}
+.tool .ic{flex:0 0 32px;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+  color:var(--k);background:color-mix(in srgb,var(--k) 12%,transparent)}
+.tool .ic svg{width:19px;height:19px}
+.tool .tn{flex:1}
+.tool .tn b{display:block;font-size:14.5px;font-weight:600}
+.tool .tn span{display:block;font-size:12px;color:var(--ink2);margin-top:1px}
+.tool .ar{color:var(--ink3);transition:transform .2s}
+.tool.open .ar{transform:rotate(180deg)}
+.tbody{display:none;padding:0 13px 14px;border-top:1px solid var(--rule2)}
+.tool.open .tbody{display:block}
+.fld{margin-top:12px}
+.fld label{display:block;font-size:12px;color:var(--ink2);margin-bottom:5px;font-weight:600}
+.fld .ipt{display:flex;gap:8px}
+.fld input,.fld select{
+  flex:1;min-width:0;padding:12px;border:1px solid var(--rule);border-radius:10px;background:var(--card2);outline:none;font-size:16px
+}
+.fld input:focus,.fld select:focus{border-color:var(--k)}
+.res{margin-top:14px;background:color-mix(in srgb,var(--k) 10%,transparent);border-radius:11px;padding:13px;text-align:center}
+.res b{display:block;font-size:24px;font-weight:800;color:var(--k);letter-spacing:-.02em}
+.res span{font-size:12.5px;color:var(--ink2);display:block;margin-top:3px}
+.hint{font-size:12px;color:var(--ink3);margin-top:10px;line-height:1.45}
+
+/* cabeçalho da tela interna na cor do programa */
+html[data-theme="light"] #shead{background:var(--acc);border-bottom-color:var(--acc)}
+html[data-theme="light"] #shead .t b{color:#fff}
+html[data-theme="light"] #shead .t span{color:rgba(255,255,255,.82)}
+html[data-theme="light"] #shead .ib{color:#fff}
+html[data-theme="light"] #shead .ib:active{background:rgba(255,255,255,.18)}
+html[data-theme="dark"] #shead{background:var(--card2)}
 </style>
 </head>
 <body>
@@ -544,8 +582,8 @@ border-radius:20px;padding:7px 12px;font-size:12px;font-weight:700;margin-right:
   <svg width="98" height="98" viewBox="0 0 100 100" aria-hidden="true">
     <rect x="4" y="4" width="92" height="92" rx="24" fill="var(--soft)"/>
     <path d="M50 20L80 50L50 80L20 50Z" fill="none" stroke="var(--acc)" stroke-width="3.5"/>
-    <path d="M50 27L73 50L50 73L27 50Z" fill="var(--acc)" opacity=".28"/>
-    <circle cx="50" cy="50" r="11" fill="var(--acc)"/><circle cx="50" cy="50" r="4.5" fill="var(--card)"/>
+    <path d="M50 27L73 50L50 73L27 50Z" fill="var(--acc)" opacity=".22"/>
+    <circle cx="50" cy="50" r="11" fill="var(--brandred,#C8322B)"/><circle cx="50" cy="50" r="4.5" fill="var(--card)"/>
   </svg>
   <div class="wm">SimuGuia</div>
   <div class="tg">Tutoriais para simulações</div>
@@ -596,18 +634,24 @@ function save() { try { localStorage.setItem('simuguia3', JSON.stringify(S)); } 
 var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6l-1.5 1.5"/></svg>';
 var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>';
 var PROGC = {
-  ansys: {acc:'#F5B700', soft:'#FDF3D2', ink:'#5C4400', dark:'#111418'},
-  sw:    {acc:'#D0271D', soft:'#FCE9E7', ink:'#8F1912', dark:'#FFFFFF'}
+  ansys: {acc:'#2F4A80', soft:'#E8EEF8', ink:'#233C6B'},
+  sw:    {acc:'#A6122E', soft:'#FBE8EC', ink:'#8A0F26'}
 };
 var PROGD = {
-  ansys: {acc:'#F5C542', soft:'#3A2E05', ink:'#F5C542'},
-  sw:    {acc:'#F08B82', soft:'#3A1210', ink:'#F08B82'}
+  ansys: {acc:'#8FAEDC', soft:'#16223C', ink:'#8FAEDC'},
+  sw:    {acc:'#E8879A', soft:'#33101A', ink:'#E8879A'}
 };
+var BRANDC = {acc:'#123A5E', soft:'#E7EEF5', ink:'#0E2E4A', red:'#C8322B'};
+var BRANDD = {acc:'#7FA8CC', soft:'#12253A', ink:'#7FA8CC', red:'#F09590'};
 function applyProg() {
   var r = document.documentElement, dark = r.getAttribute('data-theme') === 'dark';
   if (!S.prg) {
-    r.style.removeProperty('--acc'); r.style.removeProperty('--soft');
-    r.style.removeProperty('--accink'); r.style.removeProperty('--k');
+    var b = dark ? BRANDD : BRANDC;
+    r.style.setProperty('--acc', b.acc);
+    r.style.setProperty('--soft', b.soft);
+    r.style.setProperty('--accink', b.ink);
+    r.style.setProperty('--k', b.acc);
+    r.style.setProperty('--brandred', b.red);
     return;
   }
   var c = dark ? PROGD[S.prg] : PROGC[S.prg];
@@ -1653,6 +1697,31 @@ sw: [
  ["Publique","Ele gera o documento e abre direto no Word.","Relatório > Publicar"]
 ]};
 
+function analysisScreen(a, prog) {
+  return function () {
+    var tr = (BY[a.n] && BY[a.n].pt) ? BY[a.n].pt : '';
+    var fg = animFor(a.id);
+    var h = (fg ? '<div class="bigan">' + fg + '</div>' : '') +
+      '<div class="ttl">' + E(a.n) + '</div>' + (tr ? '<div class="sub">' + E(tr) + '</div>' : '');
+    h += '<h4 class="h4">O que ela faz</h4><div class="blk"><p>' + E(a.o) + '</p></div>';
+    h += '<h4 class="h4">Por que se calcula isso</h4><div class="blk ex"><p>' + E(a.ex) + '</p></div>';
+    h += '<h4 class="h4">O que ela entrega</h4><div class="outg">' +
+      a.out.map(function (o) { return '<span>' + E(o) + '</span>'; }).join('') + '</div>';
+    h += '<div class="tip">O tutorial pergunta o que você quer descobrir e monta o passo a passo só com o que serve para o seu caso.</div>';
+    return h;
+  };
+}
+function bindAnalysis(a) {
+  return function () {
+    var w = $('#goWiz');
+    if (w) w.addEventListener('click', function () {
+      vib();
+      if (BY[a.n]) { openWizard(a.n); return; }
+      openSWWizard(a);
+    });
+  };
+}
+
 function openAnalysis(a, prog) {
   S.last = a.id; save();
   push({
@@ -1832,6 +1901,101 @@ function openImprove() {
     }
   });
 }
+
+
+function openCalcs() {
+  push({
+    t1: 'Calculadoras de campo', t2: TOOLS.length + ' ferramentas',
+    html: function () {
+      return '<p class="p">Estimativas de apoio à decisão. Não substituem a análise completa nem a verificação por norma.</p>' +
+      TOOLS.map(function (t, i) {
+        var h = '<div class="tool" style="--k:' + kvar(t.k) + '" data-i="' + i + '"><button><span class="ic">' + icon2(t.ic) + '</span>' +
+          '<span class="tn"><b>' + t.n + '</b><span>' + t.s + '</span></span>' +
+          '<span class="ar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span></button><div class="tbody">';
+        if (t.sel) {
+          h += '<div class="fld"><label>' + t.sel.l + '</label><div class="ipt"><select data-f="' + t.sel.id + '">' +
+            t.sel.o.map(function (o, j) { return '<option value="' + j + '">' + o + '</option>'; }).join('') + '</select></div></div>';
+        }
+        t.f.forEach(function (f) {
+          h += '<div class="fld"><label>' + f.l + '</label><div class="ipt"><input type="number" inputmode="decimal" data-f="' + f.id + '" value="' + f.v + '"></div></div>';
+        });
+        h += '<div class="tres"></div><p class="hint">' + t.h + '</p></div></div>';
+        return h;
+      }).join('');
+    },
+    bind: function () {
+      $$('#sbody .tool').forEach(function (el) {
+        var i = +el.getAttribute('data-i'), t = TOOLS[i];
+        function calc() {
+          var v = {};
+          Array.prototype.forEach.call(el.querySelectorAll('[data-f]'), function (inp) {
+            v[inp.getAttribute('data-f')] = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
+          });
+          var out = t.c(v) || [];
+          el.querySelector('.tres').innerHTML = out.map(function (o) {
+            return '<div class="res"><b>' + o.b + '</b>' + (o.s ? '<span>' + o.s + '</span>' : '') + '</div>';
+          }).join('');
+        }
+        el.querySelector('button').addEventListener('click', function () { el.classList.toggle('on'); vib(); calc(); });
+        Array.prototype.forEach.call(el.querySelectorAll('[data-f]'), function (inp) {
+          inp.addEventListener('input', calc); inp.addEventListener('change', calc);
+        });
+        calc();
+      });
+    }
+  });
+}
+
+var TOOLS=[
+{n:"Rotação e ressonância",s:"rpm → Hz e distância da frequência natural",k:"vib",ic:"#ic-harmonic",
+ f:[{id:"rpm",l:"Rotação da máquina (rpm)",v:1750},{id:"fn",l:"Frequência natural calculada (Hz) — opcional",v:""}],
+ c:function(v){
+   var f=v.rpm/60, out=[{b:f.toFixed(2)+" Hz",s:"frequência de excitação (1× rotação)"},
+                        {b:(2*f).toFixed(2)+" Hz",s:"2ª ordem (desalinhamento, engrenagem)"}];
+   if(v.fn>0){ var d=(v.fn-f)/f*100;
+     out.push({b:(d>0?"+":"")+d.toFixed(0)+"%",s:Math.abs(d)<20?"PERIGO: a menos de 20% da excitação":"distância segura da ressonância (>20%)"});
+   }
+   return out;
+ },h:"Regra de projeto: manter a frequência natural fora da faixa de 0,8 a 1,2 vez a frequência de excitação."},
+{n:"Impacto por queda",s:"altura → velocidade e energia",k:"imp",ic:"#ic-explicit",
+ f:[{id:"h",l:"Altura de queda (m)",v:1.2},{id:"m",l:"Massa do objeto (kg)",v:3}],
+ c:function(v){ var vel=Math.sqrt(2*9.81*v.h);
+   return [{b:vel.toFixed(2)+" m/s",s:"velocidade no instante do impacto"},
+           {b:(0.5*v.m*vel*vel).toFixed(1)+" J",s:"energia cinética a ser absorvida"},
+           {b:(vel*3.6).toFixed(1)+" km/h",s:"equivalente"}];
+ },h:"Use a velocidade como condição inicial na análise explícita, posicionando a peça a 1 mm do alvo — simular a queda inteira é desperdício de cálculo."},
+{n:"Força de desbalanceamento",s:"massa excêntrica girando → força",k:"vib",ic:"#ic-modal",
+ f:[{id:"m",l:"Massa desbalanceada (g)",v:30},{id:"e",l:"Excentricidade / raio (mm)",v:100},{id:"rpm",l:"Rotação (rpm)",v:1750}],
+ c:function(v){ var w=2*Math.PI*v.rpm/60, F=(v.m/1000)*(v.e/1000)*w*w;
+   return [{b:F.toFixed(1)+" N",s:"força rotativa aplicada (F = m·e·ω²)"},
+           {b:(F/9.81).toFixed(1)+" kgf",s:"equivalente"},
+           {b:(v.rpm/60).toFixed(2)+" Hz",s:"frequência da força"}];
+ },h:"Essa força cresce com o QUADRADO da rotação: dobrar a rotação quadruplica a força. Aplique-a como carga no Harmonic Response."},
+{n:"Tamanho de elemento acústico",s:"frequência máxima → malha necessária",k:"acu",ic:"#ic-acoustic",
+ f:[{id:"f",l:"Frequência máxima analisada (Hz)",v:1000},{id:"c",l:"Velocidade do som (m/s) — ar 343, água 1480",v:343}],
+ c:function(v){ var lam=v.c/v.f;
+   return [{b:(lam*1000).toFixed(0)+" mm",s:"comprimento de onda"},
+           {b:(lam/6*1000).toFixed(1)+" mm",s:"elemento máximo (6 por onda)"},
+           {b:(lam/12*1000).toFixed(1)+" mm",s:"elemento recomendado (12 por onda)"}];
+ },h:"Malha grossa demais em acústica não avisa que está errada: ela simplesmente não propaga a onda."},
+{n:"Flecha admissível",s:"vão → limite normativo de deformação",k:"str",ic:"#ic-static",
+ f:[{id:"L",l:"Vão livre (mm)",v:5000}],
+ c:function(v){ return [{b:(v.L/250).toFixed(1)+" mm",s:"L/250 — critério usual de piso e cobertura"},
+                        {b:(v.L/350).toFixed(1)+" mm",s:"L/350 — viga de ponte rolante"},
+                        {b:(v.L/500).toFixed(1)+" mm",s:"L/500 — trilho, guia, exigência rigorosa"}];
+ },h:"Muita peça é reprovada por deslocamento antes de chegar perto do limite de tensão. Compare esses valores com o resultado Total Deformation."},
+{n:"Conversor de unidades",s:"pressão, força, comprimento, temperatura",k:"fer",ic:"#ic-matdata",
+ sel:{id:"cat",l:"Grandeza",o:["Pressão / tensão","Força","Comprimento","Temperatura","Torque"]},
+ f:[{id:"x",l:"Valor",v:100}],
+ c:function(v){
+   var c=v.cat|0, x=v.x;
+   if(c===0) return [{b:x+" MPa",s:"= N/mm²"},{b:(x*145.038).toFixed(1)+" psi",s:""},{b:(x*10.1972).toFixed(2)+" kgf/cm²",s:""},{b:(x*10).toFixed(1)+" bar",s:""}];
+   if(c===1) return [{b:x+" N",s:""},{b:(x/9.80665).toFixed(2)+" kgf",s:""},{b:(x*0.224809).toFixed(2)+" lbf",s:""},{b:(x/1000).toFixed(3)+" kN",s:""}];
+   if(c===2) return [{b:x+" mm",s:""},{b:(x/25.4).toFixed(3)+" pol",s:""},{b:(x/1000).toFixed(4)+" m",s:""}];
+   if(c===3) return [{b:x+" °C",s:""},{b:(x*9/5+32).toFixed(1)+" °F",s:""},{b:(x+273.15).toFixed(2)+" K",s:""}];
+   return [{b:x+" N·m",s:""},{b:(x*0.737562).toFixed(2)+" lbf·ft",s:""},{b:(x*10.1972).toFixed(2)+" kgf·cm",s:""}];
+ },h:"O valor digitado é sempre a primeira unidade da lista. Confira as unidades do modelo no topo da janela do Mechanical antes de entrar com carga."}
+];
 
 function openInch() {
   push({
@@ -2053,16 +2217,6 @@ function renderHome() {
     (sw ? 'Os oito estudos mecânicos, com o passo a passo de cada um.' :
           'As oito análises principais, em destaque. Toque para ver o que cada uma faz, por que se calcula aquilo e o que ela entrega.') +
     '</p></div>';
-  if (S.last) {
-    var la = null;
-    D.ANSYS.concat(D.SW).forEach(function (a) { if (a.id === S.last) la = a; });
-    if (la) {
-      var dn = (S.prog[la.id] || []).length;
-      h += '<div class="wrap" style="margin-top:14px"><button class="row" id="resume" style="border-color:var(--acc)">' +
-        '<span class="dot">▸</span><span class="tx"><span class="n1">Continuar: ' + E(la.n) + '</span>' +
-        '<span class="n2">' + dn + ' de ' + la.st.length + ' passos concluídos</span></span></button></div>';
-    }
-  }
   h += '<div class="sect">' + (sw ? 'Estudos mecânicos' : 'Principais análises') + '</div><div class="wrap">';
   h += list.map(function (a, i) {
     var tr = (BY[a.n] && BY[a.n].pt) ? BY[a.n].pt : '';
@@ -2074,6 +2228,10 @@ function renderHome() {
       '<span style="display:block;font-size:13px;color:var(--ink2);line-height:1.5;margin-top:5px">' + E(a.q) + '</span></span></button>';
   }).join('');
   if (!sw) {
+    h += '<button class="row" id="goWB" style="margin-top:6px"><span class="dot">?</span>' +
+      '<span class="tx"><span class="n1">Como o Workbench organiza tudo</span>' +
+      '<span class="n2">Sistema, célula, Toolbox e transferência de dados</span></span>' +
+      '<svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg></button>';
     h += '<button class="row" id="goCat" style="margin-top:6px"><span class="dot">+</span>' +
       '<span class="tx"><span class="n1">Outras análises</span><span class="n2">' +
       D.CATALOG.length + ' sistemas do Workbench, com exemplo prático</span></span>' +
@@ -2084,20 +2242,39 @@ function renderHome() {
     '<span class="n2">' + D.ERRORS.length + ' mensagens traduzidas e resolvidas</span></span></button>' +
     '</div>';
   $('#v-home').innerHTML = h;
-
-  var rs = $('#resume');
-  if (rs) rs.addEventListener('click', function () {
-    var la = null; D.ANSYS.concat(D.SW).forEach(function (a) { if (a.id === S.last) la = a; });
-    if (la) openAnalysis(la, D.SW.indexOf(la) >= 0 ? 'sw' : 'ansys');
-  });
   try { renderProd(); } catch (e) {}
   $$('#v-home .pick').forEach(function (b) {
     b.addEventListener('click', function () { vib(); openAnalysis(list[parseInt(b.getAttribute('data-i'), 10)], sw ? 'sw' : 'ansys'); });
   });
+  var gw = $('#goWB');
+  if (gw) gw.addEventListener('click', function () { vib(); openWB(); });
   var gc = $('#goCat');
   if (gc) gc.addEventListener('click', function () { vib(); openCatalog(); });
   $('#goErr').addEventListener('click', function () { vib(); openErrList(); });
 
+}
+
+
+function openWB() {
+  push({
+    t1: 'Como o Workbench organiza tudo', t2: 'Sistema, célula e Toolbox',
+    html: function () {
+      return '<h4 class="h4">Sistema, célula e caixa de ferramentas</h4>' +
+      '<div class="blk"><p>O <b>Toolbox</b> fica na coluna da esquerda. Você <b>arrasta</b> um item dele para o ' +
+      '<b>Project Schematic</b>, a área branca à direita, e ele vira um <b>sistema</b> — aquele bloco numerado.</p></div>' +
+      '<div class="blk"><p>Cada linha numerada dentro do bloco é uma <b>célula</b>. Elas são a ordem obrigatória do trabalho: ' +
+      'material, geometria, malha, condições, resolver e ver resultado. É essa pilha que os tutoriais percorrem.</p></div>' +
+      '<div class="blk"><p>Ligando a célula de um sistema na de outro, você <b>transfere dados</b> — a temperatura calculada ' +
+      'vira carga térmica no cálculo estrutural, por exemplo. É isso que faz do Workbench uma plataforma multifísica, ' +
+      'e não apenas um solver.</p></div>' +
+      '<div class="blk ex"><p>Em toda análise deste app há o botão <b>Abrir tutorial</b>. Ele pergunta o que você quer ' +
+      'descobrir e, ao lado de cada resultado, há um botão de explicação com desenho e texto contando o que aquela ' +
+      'grandeza é e para que serve. O passo a passo vem só com o que serve para o seu caso, do clique inicial até a ' +
+      'extração do resultado.</p></div>' +
+      '<div class="tip">O Toolbox só mostra o que a sua licença libera. Se um item deste guia não aparece na sua tela, ' +
+      'é licença ou instalação — use View All / Customize no rodapé do Toolbox para conferir.</div>';
+    }
+  });
 }
 
 function openErrList() {
@@ -2137,7 +2314,8 @@ function renderProd() {
 }
 
 function renderTools() {
-  var L = [['Melhore a peça', 'Seis mudanças de projeto, com antes e depois', openImprove],
+  var L = [['Calculadoras de campo', 'rpm e ressonância, impacto, desbalanceamento, flecha, unidades', openCalcs],
+    ['Melhore a peça', 'Seis mudanças de projeto, com antes e depois', openImprove],
     ['Polegada para milímetro', 'Fração composta e a tabela das mais usadas', openInch],
     ['Qual a diferença', 'SolidWorks e Ansys, lado a lado', openDiff],
     ['Sobre o SimuGuia', 'Versão, contato e aviso legal', openAbout]];
