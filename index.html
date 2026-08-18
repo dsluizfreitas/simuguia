@@ -14,16 +14,16 @@
 <style>
 :root{
 --paper:#F4F5F7;--card:#FFFFFF;--card2:#FAFBFC;--sunk:#F1F2F4;
---ink:#0F1417;--ink2:#4C565F;--ink3:#7C858E;
+--ink:#0F1417;--ink2:#4C565F;--ink3:#666F78;
 --rule:#E4E7EA;--rule2:#EFF1F3;
---acc:#D85A30;--soft:#FAECE7;--accink:#993C1D;--accdeep:#4A1B0C;
---str:#D85A30;--vib:#0F6E56;--ter:#BA7517;--flu:#185FA5;--imp:#A32D2D;--otm:#854F0B;--fer:#5F5E5A;
+--acc:#C24E20;--soft:#FAECE7;--accink:#993C1D;--accdeep:#4A1B0C;
+--str:#C24E20;--vib:#0F6E56;--ter:#A9660F;--flu:#185FA5;--imp:#A32D2D;--otm:#854F0B;--fer:#5F5E5A;
 --ok:#3B6D11;--okbg:#EAF3DE;--warn:#854F0B;--warnbg:#FAEEDA;--bad:#A32D2D;--badbg:#FCEBEB;
---k:#D85A30;--sat:env(safe-area-inset-top);--sab:env(safe-area-inset-bottom);
+--k:#C24E20;--sat:env(safe-area-inset-top);--sab:env(safe-area-inset-bottom);
 }
 html[data-theme="dark"]{
 --paper:#0B1116;--card:#131C24;--card2:#182430;--sunk:#101922;
---ink:#F3F1ED;--ink2:#AFAAA2;--ink3:#7E8894;
+--ink:#F3F1ED;--ink2:#AFAAA2;--ink3:#8E97A2;
 --rule:#243039;--rule2:#1B252E;
 --k:#F0997B;--acc:#F0997B;--soft:#3A1A0E;--accink:#F0997B;--accdeep:#FAD9CB;
 --str:#F0997B;--vib:#5DCAA5;--ter:#EF9F27;--flu:#85B7EB;--imp:#F09595;--otm:#FAC775;--fer:#B4B2A9;
@@ -39,14 +39,14 @@ h1,h2,h3,h4{margin:0;letter-spacing:-.025em}
 .dsp{font-weight:800;letter-spacing:-.035em;line-height:1.12}
 .mono{font-family:ui-monospace,"SF Mono",Consolas,monospace}
 .wrap{padding:0 16px}
-.sect{font-size:11px;font-weight:800;letter-spacing:.09em;color:var(--ink3);margin:26px 0 10px;padding:0 16px;text-transform:uppercase}
+.sect{font-size:11.5px;font-weight:800;letter-spacing:.09em;color:var(--ink3);margin:26px 0 10px;padding:0 16px;text-transform:uppercase}
 
 /* topo */
 #top{position:sticky;top:0;z-index:40;background:var(--card);border-bottom:1px solid var(--rule);
 padding:calc(var(--sat) + 10px) 12px 10px;display:flex;align-items:center;gap:6px}
 #top .brand{flex:1;padding-left:4px}
 #top .brand b{display:block;font-size:19px;font-weight:800;letter-spacing:-.03em}
-#top .brand span{display:block;font-size:11px;color:var(--ink3);margin-top:-2px}
+#top .brand span{display:block;font-size:11.5px;color:var(--ink3);margin-top:-2px}
 .ib{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--ink2);flex:0 0 40px}
 .ib:active{background:var(--sunk)}
 .ib svg{width:21px;height:21px}
@@ -65,8 +65,8 @@ font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px}
 html[data-theme="dark"] .pill.b{background:#12293F;color:#85B7EB}
 .row{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:13px 14px;
 margin-bottom:9px;display:flex;align-items:center;gap:12px;width:100%}
-.row .n1{display:block;font-size:15px;font-weight:600}
-.row .n2{display:block;font-size:12.5px;color:var(--ink3);margin-top:1px;line-height:1.4}
+.row .n1{display:block;font-size:15.5px;font-weight:600}
+.row .n2{display:block;font-size:13px;color:var(--ink3);margin-top:1px;line-height:1.4}
 .row .tx{flex:1;min-width:0}
 .row .cv{width:18px;height:18px;color:var(--ink3);flex:0 0 18px}
 .dot{width:38px;height:38px;border-radius:11px;background:var(--soft);display:grid;place-items:center;flex:0 0 38px;
@@ -87,7 +87,7 @@ display:flex;align-items:center;gap:8px;flex:0 0 auto}
 /* abas */
 #tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--rule);
 display:flex;padding-bottom:var(--sab)}
-#tabs button{flex:1;padding:9px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink3);font-size:10.5px}
+#tabs button{flex:1;padding:10px 0 9px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink3);font-size:11.5px}
 #tabs button svg{width:22px;height:22px}
 #tabs button[aria-selected="true"]{color:var(--acc)}
 
@@ -115,14 +115,14 @@ html[data-theme="dark"] .btn{color:#3A1A0E}
 .h4{font-size:11px;font-weight:800;letter-spacing:.07em;color:var(--accink);margin:0 0 6px}
 .msg{font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:12.5px;line-height:1.5;
 background:var(--badbg);color:var(--bad);border-radius:10px;padding:12px;margin-bottom:15px}
-.p{font-size:14.5px;line-height:1.65;color:var(--ink2);margin:0 0 16px}
+.p{font-size:15px;line-height:1.7;color:var(--ink2);margin:0 0 16px}
 ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
-ol.steps li{counter-increment:s;display:flex;gap:11px;margin-bottom:11px;font-size:14.5px;line-height:1.55;color:var(--ink2)}
+ol.steps li{counter-increment:s;display:flex;gap:11px;margin-bottom:13px;font-size:15px;line-height:1.6;color:var(--ink2)}
 ol.steps li::before{content:counter(s);flex:0 0 23px;height:23px;border-radius:50%;background:var(--soft);
 color:var(--accink);font-size:11.5px;font-weight:800;display:grid;place-items:center;margin-top:2px}
-.tip{background:var(--sunk);border-radius:10px;padding:12px;font-size:12.5px;line-height:1.55;color:var(--ink3)}
+.tip{background:var(--sunk);border-radius:10px;padding:13px;font-size:13px;line-height:1.6;color:var(--ink2)}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.tag{background:var(--sunk);color:var(--ink2);font-size:12px;padding:5px 10px;border-radius:20px}
+.tag{background:var(--sunk);color:var(--ink2);font-size:12.5px;padding:5px 10px;border-radius:20px}
 .ba{display:flex;gap:10px;margin:12px 0}
 .ba>div{flex:1;border-radius:12px;padding:12px;text-align:center}
 .ba .b1{background:var(--badbg);color:var(--bad)}
@@ -150,7 +150,7 @@ background:var(--card);border:1px solid var(--rule);width:100%}
 .ck .bx svg{width:12px;height:12px;color:#fff;display:none}
 .ck.done .bx svg{display:block}
 .ck .n1{display:block;font-size:14.5px;font-weight:600;color:var(--ink)}
-.ck .n2{display:block;font-size:13px;color:var(--ink2);line-height:1.5;margin-top:3px}
+.ck .n2{display:block;font-size:13.5px;color:var(--ink2);line-height:1.5;margin-top:3px}
 .ck .pth{display:inline-block;margin-top:6px;font-size:11.5px;color:var(--accink);background:var(--soft);padding:3px 8px;border-radius:6px}
 .ck.cur .pth{background:var(--card)}
 .prog{height:6px;border-radius:3px;background:var(--soft);margin:0 0 16px;overflow:hidden}
@@ -191,7 +191,7 @@ background:var(--card);border:1px solid var(--rule);width:100%}
   flex:1;padding:14px 16px;border-radius:12px;font-weight:700;font-size:15px;text-align:center;
   background:var(--card2);color:var(--ink);border:1px solid var(--rule)
 }
-.btn.pri{background:var(--k,var(--d-flu));color:#fff;border-color:transparent}
+.btn.pri{background:var(--k,var(--acc));color:#fff;border-color:transparent}
 .btn:active{opacity:.82}
 .btn.sm{flex:0 0 auto;padding:12px 14px;font-size:13.5px}
 .btn[disabled]{opacity:.45}
@@ -201,8 +201,8 @@ background:var(--card);border:1px solid var(--rule);width:100%}
 .prog{display:flex;gap:5px;padding:0 0 14px}
 .prog i{flex:1;height:4px;border-radius:2px;background:var(--rule)}
 .prog i.on{background:var(--k)}
-.qz{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;line-height:1.2}
-.qs{font-size:14px;color:var(--ink2);margin:0 0 16px}
+.qz{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;line-height:1.2}
+.qs{font-size:14.5px;color:var(--ink2);margin:0 0 18px;line-height:1.55}
 .opt{
   display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);
   border:1.5px solid var(--rule);border-radius:14px;padding:13px;margin-bottom:9px
@@ -216,12 +216,12 @@ background:var(--card);border:1px solid var(--rule);width:100%}
 .opt .th{flex:0 0 64px;height:38px;border-radius:8px;background:#fff;border:1px solid var(--rule2);overflow:hidden;display:grid;place-items:center}
 .opt .th svg{width:60px;height:34px;color:var(--k)}
 .opt .ot{flex:1;min-width:0}
-.opt .ot b{display:block;font-size:14.5px;font-weight:600;line-height:1.3}
-.opt .ot span{display:block;font-size:12.5px;color:var(--ink2);margin-top:2px;line-height:1.35}
+.opt .ot b{display:block;font-size:15px;font-weight:600;line-height:1.35}
+.opt .ot span{display:block;font-size:13px;color:var(--ink2);margin-top:2px;line-height:1.35}
 .optwrap{position:relative;margin-bottom:9px}
-.optwrap .opt{margin-bottom:0;padding-right:52px}
+.optwrap .opt{margin-bottom:0;padding-right:64px}
 .expb{
-  position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:10px;
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:12px;
   border:1px solid var(--rule);background:var(--card2);color:var(--k);font-weight:800;font-size:15px;display:grid;place-items:center
 }
 .expb[aria-expanded="true"]{background:var(--k);color:#fff;border-color:var(--k)}
@@ -229,7 +229,7 @@ background:var(--card);border:1px solid var(--rule);width:100%}
   border-radius:12px;padding:13px;margin:8px 0 9px}
 .figwrap{background:#fff;border:1px solid var(--rule2);border-radius:9px;padding:6px;margin-bottom:11px}
 .figwrap svg{width:100%;height:auto;display:block;color:var(--k)}
-.expbox p{margin:0 0 9px;font-size:13.5px;color:var(--ink2);line-height:1.5}
+.expbox p{margin:0 0 9px;font-size:14.5px;color:var(--ink2);line-height:1.62}
 .expbox p:last-child{margin:0}
 .expbox b{color:var(--ink)}
 .expbox em{font-style:normal;font-weight:600;color:var(--ink)}
@@ -246,7 +246,7 @@ background:var(--card);border:1px solid var(--rule);width:100%}
 .step .bx{flex:0 0 26px;width:26px;height:26px;border-radius:8px;border:1.5px solid var(--rule);
   display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--ink3);background:var(--card2)}
 .step.done{opacity:.55}
-.step.done .bx{background:var(--d-acu);border-color:var(--d-acu);color:#fff}
+.step.done .bx{background:var(--acc);border-color:var(--acc);color:#fff}
 .step.done .st{text-decoration:line-through}
 .step .sc{flex:1;min-width:0}
 .step .st{font-size:14.5px;font-weight:600;margin-bottom:4px;line-height:1.3}
@@ -256,17 +256,18 @@ background:var(--card);border:1px solid var(--rule);width:100%}
   border:1px solid var(--rule2);border-radius:5px;padding:1px 5px;color:var(--ink);word-break:break-word}
 .stepfig{background:#fff;border:1px solid var(--rule2);border-radius:8px;padding:5px;margin:0 0 9px}
 .stepfig svg{width:100%;height:auto;display:block;color:var(--k)}
-.warn{border-left:3px solid #C2971A;background:var(--sunk));
-  padding:12px 13px;border-radius:10px;font-size:13.5px;color:var(--ink2);margin-bottom:9px;line-height:1.5}
+.warn{border-left:3px solid #C2971A;background:var(--sunk);
+  padding:13px 14px;border-radius:10px;font-size:14px;color:var(--ink2);margin-bottom:9px;line-height:1.5}
 .warn em{font-style:normal;font-weight:600;color:var(--ink)}
 .note{width:100%;min-height:88px;border:1px solid var(--rule);border-radius:12px;padding:12px;
   background:var(--card);resize:vertical;font-size:14.5px;line-height:1.5;outline:none}
 .note:focus{border-color:var(--k)}
-.recap{background:var(--card2);border:1px dashed var(--rule);border-radius:12px;padding:13px;font-size:13.5px;
+.recap{background:var(--card2);border:1px dashed var(--rule);border-radius:12px;padding:14px;font-size:14px;
   color:var(--ink2);margin-bottom:6px;line-height:1.55}
 .recap b{color:var(--ink)}
 /* ===== leitura: blocos, hierarquia e justificação ===== */
-.p,.blk p,.expbox p,.step .sd{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.p,.blk p{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.expbox p,.step .sd,.ck .n2,.recap,.warn,.tip{text-align:left}
 .h4{font-size:10.5px;font-weight:800;letter-spacing:.11em;color:var(--accink);margin:0 0 8px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
 .h4::after{content:"";flex:1;height:1px;background:var(--rule)}
 .blk{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:15px 16px;margin:0 0 18px}
@@ -279,14 +280,14 @@ background:var(--card);border:1px solid var(--rule);width:100%}
 html[data-theme="dark"] .blk.ex p{color:var(--accdeep)}
 .blk.ex b,.blk.ex strong{color:var(--accdeep)}
 .outg{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 18px}
-.outg span{background:var(--sunk);color:var(--ink2);font-size:13px;padding:7px 12px;border-radius:20px;line-height:1.3}
+.outg span{background:var(--sunk);color:var(--ink2);font-size:13.5px;padding:7px 12px;border-radius:20px;line-height:1.3}
 .flow{counter-reset:f;margin:0 0 18px;padding:0;list-style:none}
 .flow li{counter-increment:f;display:flex;gap:11px;align-items:flex-start;background:var(--card);
-border:1px solid var(--rule);border-radius:12px;padding:11px 13px;margin-bottom:7px;font-size:14px;color:var(--ink2);line-height:1.5}
+border:1px solid var(--rule);border-radius:12px;padding:12px 13px;margin-bottom:7px;font-size:14.5px;color:var(--ink2);line-height:1.5}
 .flow li::before{content:counter(f);flex:0 0 22px;height:22px;border-radius:7px;background:var(--soft);
 color:var(--accink);font-size:11.5px;font-weight:800;display:grid;place-items:center}
-.ttl{font-size:21px;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin:0 0 4px}
-.sub{font-size:13.5px;color:var(--ink3);margin:0 0 18px;line-height:1.4}
+.ttl{font-size:25px;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin:0 0 4px}
+.sub{font-size:14px;color:var(--ink3);margin:0 0 18px;line-height:1.4}
 
 
 .an-vb{animation:avb 1.05s ease-in-out infinite alternate}
@@ -314,35 +315,42 @@ html[data-theme="dark"] .mfig{background:rgba(255,255,255,.06)}
 border:1px solid var(--rule);border-radius:12px;padding:12px 13px;margin-bottom:8px;text-align:left}
 .step.done{opacity:.5}
 .step.done .st{text-decoration:line-through}
+.step.cur{border-color:var(--acc);background:var(--soft)}
+.step.cur .bx{background:var(--acc);color:var(--card)}
+.step.cur .path{background:var(--card)}
+body.choice #tabs{display:none}
+body.choice .view{padding-bottom:calc(var(--sab) + 24px)}
 .step .bx{flex:0 0 24px;height:24px;border-radius:8px;background:var(--soft);color:var(--accink);
 font-size:12px;font-weight:800;display:grid;place-items:center;margin-top:1px}
 .step.done .bx{background:var(--acc);color:var(--card)}
 .step .sc{flex:1;min-width:0;display:block}
-.step .st{display:block;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:5px}
-.step .sd{display:block;font-size:13.5px;color:var(--ink2);line-height:1.6;margin-bottom:6px}
+.step .st{display:block;font-size:15.5px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:5px}
+.step .sd{display:block;font-size:14.5px;color:var(--ink2);line-height:1.62;margin-bottom:7px}
 .step .path{display:inline-block;font-family:ui-monospace,"SF Mono",Consolas,monospace;
-font-size:11.5px;background:var(--sunk);color:var(--accink);padding:4px 9px;border-radius:7px;margin-top:2px}
+font-size:12px;background:var(--sunk);color:var(--accink);padding:4px 9px;border-radius:7px;margin-top:2px}
 .step .stepfig{display:block;margin:8px 0}
 .grp{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accink);
 background:var(--soft);border-radius:8px;padding:7px 11px;margin:20px 0 10px;display:inline-block}
 
 .optwrap{position:relative;margin-bottom:9px}
-.optwrap .opt{margin-bottom:0;padding-right:54px}
+.optwrap .opt{margin-bottom:0;padding-right:64px}
 .optwrap .expb{position:absolute;right:9px;top:50%;transform:translateY(-50%);
-width:34px;height:34px;border-radius:10px;border:1.5px solid var(--rule);background:var(--card);
-color:var(--accink);font-size:15px;font-weight:800;display:grid;place-items:center;z-index:2}
+width:44px;height:44px;border-radius:12px;border:1.5px solid var(--rule);background:var(--card);
+color:var(--accink);font-size:17px;font-weight:800;display:grid;place-items:center;z-index:2}
 .optwrap .expb[aria-expanded="true"]{background:var(--acc);border-color:var(--acc);color:var(--card)}
 .expbox{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--acc);
 border-radius:12px;padding:13px;margin:0 0 10px}
-.expbox p{margin:0 0 8px;font-size:13.5px;line-height:1.6;color:var(--ink2);text-align:justify}
+.expbox p{margin:0 0 9px;font-size:14.5px;line-height:1.62;color:var(--ink2);text-align:left}
 .expbox p:last-child{margin:0}
 
-#splash{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;
-justify-content:center;padding:calc(var(--sat) + 30px) 26px calc(var(--sab) + 30px);text-align:center;
+#splash{position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;
+justify-content:center;padding:calc(var(--sat) + 30px) 26px calc(var(--sab) + 64px);text-align:center;
 background:var(--card);transition:opacity .3s}
 #splash.out{opacity:0}
+#splash > svg{flex:0 0 auto;display:block;margin:0 auto}
+#splash .wm,#splash .tg,#splash .pg{width:100%;max-width:340px;margin-left:auto;margin-right:auto;text-align:center}
 #splash .btn{flex:0 0 auto;align-self:center;max-width:300px;width:100%;margin-top:30px;padding:15px 16px;font-size:16px;border-radius:14px;line-height:1.2;height:auto}
-#splash .by{position:static;margin-top:auto;padding-top:26px;font-size:13px;color:var(--ink3)}
+#splash .by{position:absolute;left:0;right:0;bottom:calc(var(--sab) + 22px);margin:0;padding:0;text-align:center;font-size:13px;color:var(--ink3)}
 body.splash #top,body.splash #tabs{display:none}
 body.splash main .view{display:none}
 
@@ -562,7 +570,7 @@ html[data-theme="dark"] #shead{background:var(--card2)}
   <h2 id="ih"></h2>
   <p id="ip"></p>
   <div class="dots" id="idots"><i class="on"></i><i></i><i></i></div>
-  <button class="btn" id="inext">Próximo</button>
+  <button class="btn pri" id="inext">Próximo</button>
   <div class="by">By Luiz Freitas</div>
 </div>
 
@@ -588,7 +596,7 @@ border-radius:20px;padding:7px 12px;font-size:12px;font-weight:700;margin-right:
   <div class="wm">SimuGuia</div>
   <div class="tg">Tutoriais para simulações</div>
   <div class="pg">para Ansys Workbench &amp; SolidWorks Simulation</div>
-  <button class="btn" id="splashGo" style="max-width:320px;margin-top:30px">Avançar</button>
+  <button class="btn pri" id="splashGo" style="max-width:320px;margin-top:30px">Avançar</button>
   <div class="by">By Luiz Freitas</div>
 </div>
   <section class="view on" id="v-home"></section>
@@ -722,7 +730,7 @@ function goHome() {
   $$('#tabs button').forEach(function (x) { x.setAttribute('aria-selected', x.getAttribute('data-v') === 'home' ? 'true' : 'false'); });
   renderHome(); window.scrollTo(0, 0);
 }
-function push(v) { STACK.push(v); history.pushState({ n: STACK.length }, ''); paintStack(); }
+function push(v) { STACK.push(v); history.pushState({ n: STACK.length }, ''); paintStack(true); }
 window.addEventListener('popstate', function () { if (STACK.length) { STACK.pop(); paintStack(); } });
 $('#sfav').addEventListener('click', function () {
   var v = STACK[STACK.length - 1]; if (!v || !v.fav) return;
@@ -730,8 +738,8 @@ $('#sfav').addEventListener('click', function () {
   saveAll(); vib(12); paintStack();
 });
 $('#sback').addEventListener('click', function () { vib(); if (STACK.length) history.back(); });
-function paintStack() {
-  var st = $('#stack');
+function paintStack(fresh) {
+  var st = $('#stack'), keep = fresh ? 0 : ($('#sbody') ? $('#sbody').scrollTop : 0);
   if (!STACK.length) { st.classList.remove('on'); $('#sbody').innerHTML = ''; return; }
   var v = STACK[STACK.length - 1];
   st.classList.add('on');
@@ -739,7 +747,7 @@ function paintStack() {
   document.documentElement.style.setProperty('--k', v.k ? kvar(v.k) : 'var(--acc)');
   $('#stack').style.setProperty('--k', v.k ? kvar(v.k) : 'var(--acc)');
   $('#sbody').innerHTML = v.html();
-  $('#sbody').scrollTop = 0;
+  $('#sbody').scrollTop = keep;
   var fv = $('#sfav');
   fv.style.display = v.fav ? 'grid' : 'none';
   if (v.fav) fv.style.color = FAV.indexOf(v.fav) >= 0 ? '#EF9F27' : 'var(--ink3)';
@@ -1382,6 +1390,66 @@ function glosFor(label){
   return null;
 }
 
+/* Glossário complementar do SolidWorks: só os resultados cujo nome não bate
+   com nenhuma entrada do GLOS. Quando o estudo é o mesmo do Ansys (von Mises,
+   deslocamento, fator de segurança, frequência, flambagem, fadiga, plástica),
+   o app reaproveita a mesma explicação e a mesma figura. */
+var SWGLOS=[
+[/for[cç]as? resultantes?/i,{t:"Forças resultantes",fig:"fig-reacao",
+ oq:"É a soma das forças que as fixações precisam fazer para segurar a peça no lugar. Pela terceira lei de Newton, é exatamente o que a peça descarrega no parafuso, no chumbador ou na base.",
+ pq:"É o número que você entrega para dimensionar o que vem <em>depois</em> da sua peça: a bucha, o parafuso, o perfil de apoio, a laje. E é a melhor conferência global do modelo.",
+ ob:"Selecione a face fixada em <em>Listar forças resultantes</em> e some tudo: o total tem que bater com a carga aplicada. Se não bater, falta carga ou falta fixação no estudo."}],
+[/dano/i,{t:"Dano acumulado",fig:"fig-sn",
+ oq:"É o percentual da vida da peça que o evento de carregamento consome. Cem por cento significa que a trinca aparece exatamente ao fim daquele evento.",
+ pq:"Traduz a fadiga para uma linguagem de decisão: você define o ciclo real de trabalho e vê quanto dele a peça aguenta antes de precisar de troca ou inspeção.",
+ ob:"Vários eventos somam dano (regra de Miner). Um evento raro e severo pode consumir mais vida que milhares de ciclos leves — vale conferir os dois separados."}],
+[/^fator de carga$/i,{t:"Fator de carga (fadiga)",fig:"fig-sn",
+ oq:"Diz quantas vezes a carga poderia crescer mantendo a peça dentro da vida pedida. Fator 1,6 significa que ela ainda cumpriria a vida com 60% a mais de carga.",
+ pq:"Serve para saber a folga real do projeto sob fadiga, e não apenas se ele passa. É o que permite responder se dá para aumentar a capacidade do equipamento.",
+ ob:"Depende inteiramente da curva S-N cadastrada. Com curva estimada, use o fator para comparar alternativas, nunca como número de liberação de projeto crítico."}],
+[/deforma[cç][aã]o permanente/i,{t:"Deformação permanente",fig:"fig-plastica",
+ oq:"É a parcela da deformação que <em>não volta</em> quando a carga é retirada. Enquanto está no regime elástico, a peça volta ao lugar; passando do escoamento, fica marcada para sempre.",
+ pq:"Mostra se a peça sofreu dano permanente e exatamente onde. Numa queda, é o que separa a peça que só assustou da peça que precisa ser descartada.",
+ ob:"Só aparece se o material tiver curva plástica cadastrada. Valores próximos do alongamento de ruptura do material indicam risco de trinca, não só de amassado."}],
+[/acelera[cç][aã]o/i,{t:"Aceleração no impacto",fig:"fig-energia",
+ oq:"É a desaceleração que o conteúdo sofre no instante da batida, medida em g. Cair de 1,2 m leva alguns milissegundos para parar, e é essa parada brusca que gera o valor alto.",
+ pq:"É o número que diz se o equipamento embalado sobrevive. A embalagem não existe para não quebrar: existe para alongar o tempo de parada e derrubar o pico de g.",
+ ob:"Leia sempre o gráfico no tempo, não um valor único: o pico dura frações de milissegundo. Espuma, aba flexível e nervura que colapsa reduzem o pico sem mudar a altura da queda."}],
+[/curva carga-deslocamento/i,{t:"Curva carga-deslocamento",fig:"fig-desloc",
+ oq:"É o gráfico do quanto a peça desloca para cada fatia de carga aplicada. Enquanto o material está no elástico, a curva é uma reta; quando ela deita, o material começou a escoar ou o contato mudou.",
+ pq:"No estudo não linear é o resultado principal, mais que um valor único de tensão: ele mostra em que carga a peça deixa de responder proporcionalmente e quando perde rigidez de vez.",
+ ob:"Use uma sonda no ponto de aplicação da carga. Se a curva parar antes do fim, o estudo não convergiu naquele passo — reduza o incremento de carga antes de mexer na malha."}],
+[/tens[aã]o rms/i,{t:"Tensão RMS (vibração aleatória)",fig:"fig-psd",
+ oq:"Na vibração aleatória não existe um valor único de tensão: existe uma distribuição. O RMS é o valor eficaz dessa distribuição, e o 3σ é o pico que a peça vê em cerca de 0,3% do tempo.",
+ pq:"É o valor que se compara com o limite de fadiga quando o equipamento é qualificado por norma de transporte ou de vibração de máquina.",
+ ob:"Verifique o 3σ, não o RMS puro: é o pico que trinca a solda. E confira se os modos calculados cobrem toda a faixa de frequência do espectro aplicado."}],
+[/amplitude por frequ[eê]ncia/i,{t:"Amplitude por frequência",fig:"fig-freqresp",
+ oq:"É a curva de quanto a peça se move (ou de quanta tensão aparece) em cada frequência da excitação, já com o amortecimento considerado.",
+ pq:"O estudo de frequência diz <em>onde</em> está o perigo; esta curva diz o <em>tamanho</em> dele. É ela que mostra se a ressonância é um incômodo ou uma falha por fadiga.",
+ ob:"Leia o valor na frequência de operação, não só o máximo global. Sem amortecimento definido, o pico vai ao infinito e o resultado não significa nada."}],
+[/tabela de cen[aá]rios/i,{t:"Tabela de cenários",fig:"fig-sens",
+ oq:"É o quadro com uma coluna por combinação de cotas testada, mostrando massa, tensão e deslocamento de cada uma lado a lado.",
+ pq:"Permite decidir com número na mão em vez de tentativa e erro: você vê de uma vez qual dimensão realmente muda o resultado e qual só encarece a peça.",
+ ob:"Restrinja a faixa aos valores que existem no mercado. Não adianta o estudo apontar chapa de 5,3 mm se o depósito só tem 4,75 e 6,35."}],
+[/configura[cç][aã]o [oó]tima/i,{t:"Configuração ótima",fig:"fig-pareto",
+ oq:"É a combinação de cotas que atende a todas as restrições com o melhor valor do objetivo — normalmente a menor massa possível dentro do limite de tensão e de flecha.",
+ pq:"Fecha o ciclo do projeto: em vez de aprovar a peça que você desenhou, mostra a peça mais leve que ainda passa.",
+ ob:"Confirme sempre rodando um estudo estático dedicado nessa configuração antes de liberar o desenho: a varredura interpola, e o ótimo costuma ficar bem em cima do limite."}]
+];
+function swGlosFor(label){
+  for(var i=0;i<SWGLOS.length;i++){ if(SWGLOS[i][0].test(label)) return SWGLOS[i][1]; }
+  return glosFor(label);
+}
+function swExpBox(r){
+  var g=swGlosFor(r[0]), h='<div class="expbox">';
+  if(g){
+    h+='<div class="figwrap">'+figv(g.fig)+'</div>'+
+       '<p><b>O que é.</b> '+g.oq+'</p><p><b>Para que serve.</b> '+g.pq+'</p><p><b>Na prática.</b> '+g.ob+'</p>';
+  }
+  h+='<p><b>Como se extrai.</b> '+E(r[1])+'</p><p><b>Como se lê.</b> '+E(r[2])+'</p>';
+  return h+'</div>';
+}
+
 
 
 
@@ -1553,13 +1621,15 @@ function openTutorial(cfg){
       var haveTx={build:'vai modelar a peça',cad:'já tem o arquivo CAD',mesh:'já tem malha ou análise montada'}[cfg.have];
       var h='<div class="tprog"><div class="tbar"><i id="pbar"></i></div><div class="tmeta"><span id="pnum"></span><span>toque no passo para concluir</span></div></div>';
       h+='<div class="recap"><b>Ponto de partida:</b> você '+haveTx+(cfg.shape?' ('+SHAPES[cfg.shape].b.toLowerCase()+')':'')+'.<br><b>Você quer obter:</b> '+cfg.labels.map(esc).join(' · ')+'</div>';
+      var num=0, curDone=false;
       G.forEach(function(gr,gi){
         h+='<div class="grp">'+gr.g+'</div>';
         if(gr.fig) h+='<div class="stepfig">'+figv(gr.fig)+'</div>';
         if(gr.warn){ gr.warn.forEach(function(w){ h+='<div class="warn">'+w+'</div>'; }); return; }
         gr.s.forEach(function(st,si){
-          var key=gi+'.'+si, done=!!rec.done[key];
-          h+='<button class="step'+(done?' done':'')+'" data-k="'+key+'"><span class="bx">'+(si+1)+'</span><span class="sc">'+
+          var key=gi+'.'+si, done=!!rec.done[key]; num++;
+          var cur=(!done&&!curDone); if(cur) curDone=true;
+          h+='<button class="step'+(done?' done':(cur?' cur':''))+'" data-k="'+key+'"><span class="bx">'+num+'</span><span class="sc">'+
              '<span class="st">'+st.t+'</span>'+
              (st.fig?'<span class="stepfig">'+figv(st.fig)+'</span>':'')+
              (st.gl?'<span class="sd" style="margin-bottom:7px">'+st.gl+'</span>':'')+
@@ -1569,8 +1639,9 @@ function openTutorial(cfg){
       if(cfg.rep){
         h+='<div class="grp">Gerar o relatório em Word</div>';
         REPSTEPS.ansys.forEach(function(rs,ri){
-          var key='r.'+ri, dn=!!rec.done[key];
-          h+='<button class="step'+(dn?' done':'')+'" data-k="'+key+'"><span class="bx">'+(ri+1)+'</span><span class="sc">'+
+          var key='r.'+ri, dn=!!rec.done[key]; num++;
+          var cr=(!dn&&!curDone); if(cr) curDone=true;
+          h+='<button class="step'+(dn?' done':(cr?' cur':''))+'" data-k="'+key+'"><span class="bx">'+num+'</span><span class="sc">'+
              '<span class="st">'+esc(rs[0])+'</span><span class="sd">'+esc(rs[1])+'</span>'+
              (rs[2]?'<span class="path">'+esc(rs[2])+'</span>':'')+'</span></button>';
         });
@@ -1586,8 +1657,8 @@ function openTutorial(cfg){
       $$('.step').forEach(function(b){
         b.addEventListener('click',function(){
           var key=b.getAttribute('data-k');
-          rec.done[key]=!rec.done[key]; b.classList.toggle('done',!!rec.done[key]);
-          saveAll(); vib(); upd();
+          rec.done[key]=!rec.done[key];
+          saveAll(); vib(); paintStack();
         });
       });
       upd();
@@ -1607,7 +1678,7 @@ function openSWWizard(a) {
         return '<div class="optwrap"><button class="opt" data-i="' + i + '" aria-pressed="true"><span class="mk"></span>' +
           '<span class="ot"><b>' + E(r[0]) + '</b></span></button>' +
           '<button class="expb" data-x="' + i + '" aria-expanded="' + (open === i) + '" aria-label="O que é isso">?</button></div>' +
-          (open === i ? '<div class="expbox"><p><b>Como se extrai.</b> ' + E(r[1]) + '</p><p><b>Como se lê.</b> ' + E(r[2]) + '</p></div>' : '');
+          (open === i ? swExpBox(r) : '');
       }).join('') + '</div>';
       h += '<div class="optwrap" style="margin-top:14px"><button class="opt" id="swrep" aria-pressed="' + rep + '">' +
         '<span class="mk"></span><span class="ot"><b>Gerar relatório em Word</b><span>acrescenta o passo a passo do documento no fim</span></span></button></div>';
@@ -1642,24 +1713,30 @@ function openSWTut(a, sel, rep) {
       h += '<div class="recap"><b>Ponto de partida:</b> a peça já está modelada no SolidWorks.<br>' +
         '<b>Você quer obter:</b> ' + sel.map(function (i) { return E(res[i][0]); }).join(' · ') + '</div>';
       h += '<div class="grp">Montar o estudo</div>';
+      var curDone = false;
       h += a.st.map(function (s, i) {
-        var d = done.indexOf(i) >= 0;
-        return '<button class="step' + (d ? ' done' : '') + '" data-i="' + i + '"><span class="bx">' + (i + 1) + '</span>' +
+        var d = done.indexOf(i) >= 0, cur = (!d && !curDone); if (cur) curDone = true;
+        return '<button class="step' + (d ? ' done' : (cur ? ' cur' : '')) + '" data-i="' + i + '"><span class="bx">' + (i + 1) + '</span>' +
           '<span class="sc"><span class="st">' + E(s[0]) + '</span><span class="sd">' + E(s[1]) + '</span>' +
           (s[2] ? '<span class="path">' + E(s[2]) + '</span>' : '') + '</span></button>';
       }).join('');
       h += '<div class="grp">Extrair e ler os resultados</div>';
       h += sel.map(function (ri, n) {
-        var idx = a.st.length + n, d = done.indexOf(idx) >= 0, r = res[ri];
-        return '<button class="step' + (d ? ' done' : '') + '" data-i="' + idx + '"><span class="bx">' + (idx + 1) + '</span>' +
-          '<span class="sc"><span class="st">' + E(r[0]) + '</span><span class="sd">' + E(r[1]) + '</span>' +
+        var idx = a.st.length + n, d = done.indexOf(idx) >= 0, r = res[ri], gl = swGlosFor(r[0]);
+        var cur = (!d && !curDone); if (cur) curDone = true;
+        return '<button class="step' + (d ? ' done' : (cur ? ' cur' : '')) + '" data-i="' + idx + '"><span class="bx">' + (idx + 1) + '</span>' +
+          '<span class="sc"><span class="st">' + E(r[0]) + '</span>' +
+          (gl ? '<span class="stepfig">' + figv(gl.fig) + '</span>' : '') +
+          (gl ? '<span class="sd" style="margin-bottom:7px"><b>' + E(gl.t) + '.</b> ' + gl.oq + '</span>' : '') +
+          '<span class="sd">' + E(r[1]) + '</span>' +
           '<span class="sd" style="margin-top:6px;color:var(--accink)">' + E(r[2]) + '</span></span></button>';
       }).join('');
       if (rep) {
         h += '<div class="grp">Gerar o relatório em Word</div>';
         h += REPSTEPS.sw.map(function (rs, ri) {
           var idx = 1000 + ri, d = done.indexOf(idx) >= 0;
-          return '<button class="step' + (d ? ' done' : '') + '" data-i="' + idx + '"><span class="bx">' + (ri + 1) + '</span>' +
+          var cr = (!d && !curDone); if (cr) curDone = true;
+          return '<button class="step' + (d ? ' done' : (cr ? ' cur' : '')) + '" data-i="' + idx + '"><span class="bx">' + (a.st.length + sel.length + ri + 1) + '</span>' +
             '<span class="sc"><span class="st">' + E(rs[0]) + '</span><span class="sd">' + E(rs[1]) + '</span>' +
             '<span class="path">' + E(rs[2]) + '</span></span></button>';
         }).join('');
@@ -2036,26 +2113,35 @@ function openInch() {
 }
 
 function openDiff() {
-  var rows = [['Onde roda', 'dentro do CAD', 'ambiente próprio'],
-    ['Aprender o básico', 'dias', 'semanas'],
-    ['Malha', 'automática', 'controle total'],
-    ['Contato', 'resolve o comum', 'resolve o difícil'],
-    ['Material escoando', 'só no Premium', 'nativo'],
-    ['Impacto', 'ensaio de queda', 'Explicit Dynamics'],
-    ['Modelo grande', 'trava', 'escala'],
-    ['Quando dá erro', 'mensagem curta', 'diagnóstico completo']];
   push({
     t1: 'Qual a diferença', t2: 'SolidWorks e Ansys',
     html: function () {
-      return '<div class="card"><h4 class="h4">SOLIDWORKS SIMULATION</h4><p class="p" style="margin:0">' +
-        'Análises mais simples e relatório mais prático. Roda dentro do próprio CAD, e o gerador monta o documento quase pronto.</p></div>' +
-        '<div class="card"><h4 class="h4">ANSYS</h4><p class="p" style="margin:0">' +
-        'Análises mais complexas e relatório mais intencional. Ambiente próprio, com controle sobre cada etapa e um relatório em que você define o que entra, item por item.</p></div>' +
-        '<h4 class="h4" style="margin-top:20px">LADO A LADO</h4><table class="tbl">' +
-        rows.map(function (r) {
-          return '<tr><td>' + E(r[0]) + '</td><td style="text-align:right">' + E(r[1]) + ' · ' + E(r[2]) + '</td></tr>';
-        }).join('') + '</table>' +
-        '<div class="tip" style="margin-top:16px">Os dois são ferramentas legítimas para propósitos diferentes. A escolha depende do problema, não do nível de quem calcula.</div>';
+      return '<p class="p">Os dois resolvem o mesmo tipo de equação por elementos finitos. A diferença não está na física: está em <b>quanto do processo cada um decide por você</b> — e, em consequência, em até onde cada um consegue ir quando o problema deixa de ser simples.</p>' +
+
+        '<div class="card"><h4 class="h4">SOLIDWORKS SIMULATION</h4><p class="p" style="margin:0">' +
+        'Vive dentro do CAD, na mesma árvore em que a peça foi modelada. Isso muda tudo no fluxo: material, cotas e montagem já estão ali, e mudar uma espessura no modelo atualiza o estudo sem reimportar nada. Ele assume as decisões difíceis no seu lugar — malha por curvatura, contato unido por padrão, solver escolhido sozinho — e por isso o primeiro resultado sai no mesmo dia. Vem em três níveis: o Standard faz estático e fadiga, o Professional acrescenta frequência, flambagem, térmico, queda e otimização, e o Premium libera não linear e dinâmica linear. Metade das dúvidas de quem começa é justamente procurar um botão que a licença não libera.</p></div>' +
+
+        '<div class="card"><h4 class="h4">ANSYS WORKBENCH</h4><p class="p" style="margin:0">' +
+        'É um ambiente próprio, e a geometria entra nele como convidada. O trabalho é montado em blocos — dados de material, geometria, modelo, configuração, solução — que você liga um no outro: a temperatura de um térmico vira carga de um estrutural, o estático vira base da flambagem, o modal vira base do harmônico. Nada é escolhido sozinho: tipo de contato, tamanho de elemento, número de subpassos, solver direto ou iterativo, tudo fica exposto. Custa mais tempo para montar o primeiro estudo e devolve controle sobre cada etapa do cálculo.</p></div>' +
+
+        '<h4 class="h4" style="margin-top:22px">A MALHA E O CONTATO</h4>' +
+        '<p class="p">É onde a diferença aparece primeiro na prática. O SolidWorks gera a malha por curvatura, com controle local quando você pede, e resolve bem peça isolada e montagem parafusada comum. O Ansys deixa você dizer quantos elementos quer na espessura da parede, forçar malha hexaédrica por varredura, inserir camadas de inflação para camada limite e ler as métricas de qualidade antes de resolver.</p>' +
+        '<p class="p">No contato, os dois partem de tudo unido — o que equivale a soldar a montagem inteira. A diferença é o que existe depois disso: o Ansys expõe tratamento de interface, raio de pinball, rigidez normal e comportamento assimétrico, que é o que resolve os casos em que a solução não converge por causa de folga ou de penetração inicial.</p>' +
+
+        '<h4 class="h4" style="margin-top:22px">ATÉ ONDE CADA UM VAI</h4>' +
+        '<p class="p">O SolidWorks cobre com folga o que a maioria das peças mecânicas exige: resistência, flecha, fator de segurança, frequência natural, flambagem, fadiga com curva S-N e ensaio de queda. Quando o material precisa escoar de verdade, quando o contato abre e fecha durante o carregamento ou quando a peça desloca mais que a própria espessura, você já depende do Premium.</p>' +
+        '<p class="p">O Ansys começa onde isso termina. Ele trata plasticidade, hiperelasticidade, fluência e grandes deslocamentos como caso comum, e vai além do estrutural: escoamento de fluido, combustão, eletromagnetismo, acústica, compósito camada por camada, impacto em milissegundos com material rompendo, otimização topológica e acoplamento multifísico em que estrutura e fluido conversam a cada passo de tempo. Também é o que aguenta modelo grande: o que trava numa montagem de milhares de peças, ali se resolve com superelemento, simetria e solver iterativo.</p>' +
+
+        '<h4 class="h4" style="margin-top:22px">QUANDO DÁ ERRO</h4>' +
+        '<p class="p">O SolidWorks costuma dizer o que aconteceu numa linha, e às vezes apontar o componente culpado. O Ansys abre o log da solução: em que subpasso a convergência empacou, qual elemento distorceu, como o critério de força evoluiu tentativa a tentativa. É mais texto para ler e é o que permite consertar a causa em vez de tentar de novo às cegas.</p>' +
+
+        '<h4 class="h4" style="margin-top:22px">O RELATÓRIO</h4>' +
+        '<p class="p">O SolidWorks monta o documento quase pronto: você marca as seções, preenche o cabeçalho e publica. O Ansys monta o relatório a partir do que você deixou na árvore — os nomes que você deu a cada resultado viram os títulos, e as figuras só existem se você inseriu cada uma. Sai mais trabalhoso e sai com a sua leitura de engenharia dentro, e não só com as telas do programa.</p>' +
+
+        '<h4 class="h4" style="margin-top:22px">COMO ESCOLHER</h4>' +
+        '<p class="p">Pergunte o que o resultado vai decidir. Se é conferir uma peça que você mesmo desenhou, comparar duas espessuras e liberar o desenho, o SolidWorks entrega isso mais rápido e sem sair do CAD. Se o resultado vai justificar um projeto perante norma, se envolve mais de uma física ao mesmo tempo, se o material vai escoar ou se o modelo é grande demais, o tempo gasto montando no Ansys se paga.</p>' +
+
+        '<div class="tip" style="margin-top:18px">Os dois são ferramentas legítimas para propósitos diferentes. A escolha depende do problema, não do nível de quem calcula — e quem aprende a pensar a análise num deles transfere quase tudo para o outro, porque o que muda é a interface, não a física.</div>';
     }
   });
 }
@@ -2084,17 +2170,17 @@ function openAbout() {
 var showChoice = false;
 function openChoice() { showChoice = true; renderHome(); window.scrollTo(0, 0); }
 function choiceHTML() {
-  return '<div class="wrap" style="padding-top:26px;text-align:center">' + '<svg viewBox="0 0 100 100" style="width:74px;height:74px" aria-hidden="true">' + '<rect x="4" y="4" width="92" height="92" rx="24" fill="var(--soft)"/>' + '<path d="M50 20L80 50L50 80L20 50Z" fill="none" stroke="var(--acc)" stroke-width="3.5"/>' + '<path d="M50 27L73 50L50 73L27 50Z" fill="var(--acc)" opacity=".28"/>' + '<circle cx="50" cy="50" r="11" fill="var(--acc)"/><circle cx="50" cy="50" r="4.5" fill="var(--card)"/></svg>' +
-    '<h2 class="dsp" style="font-size:30px;margin-top:14px">SimuGuia</h2>' +
-    '<p style="font-size:14.5px;color:var(--ink2);margin:6px 0 4px">Tutoriais para simulações</p>' +
-    '<p style="font-size:13px;color:var(--ink3);margin:0 0 22px">Escolha o programa para começar</p></div>' +
+  return '<div class="wrap" style="padding-top:22px">' +
+    '<p style="font-size:11.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--ink3);margin:0 0 8px">Comece por aqui</p>' +
+    '<h2 class="dsp" style="font-size:25px;margin:0">Escolha o programa</h2>' +
+    '<p style="font-size:14.5px;color:var(--ink2);margin:8px 0 20px;line-height:1.6">O conteúdo inteiro se adapta: os menus, as mensagens de erro e o passo a passo.</p></div>' +
     '<div class="wrap">' +
     '<button class="card" id="cAnsys" style="border-color:var(--acc);border-width:2px;text-align:left">' +
       '<div style="display:flex;gap:12px;align-items:center"><span class="dot" style="background:#2F4A80;color:#fff;border:2px solid #2F4A80">A</span>' +
       '<span><b style="display:block;font-size:17px;color:#2F4A80">Ansys Workbench</b>' +
       '<span style="font-size:12.5px;color:var(--ink3)">Mechanical · Fluent · Explicit</span></span></div>' +
       '<p class="p" style="margin:12px 0 0;text-align:left">Análises mais complexas e relatório mais intencional. ' +
-      D.ANSYS.length + ' principais em destaque e o catálogo completo de ' + D.CATALOG.length + '.</p></button>' +
+      D.ANSYS.length + ' principais em destaque e o catálogo completo de ' + D.CATALOG.length + ' simulações que o Ansys é capaz de executar.</p></button>' +
     '<button class="card" id="cSW" style="text-align:left"><div style="display:flex;gap:12px;align-items:center">' +
       '<span class="dot" style="background:#A6122E;color:#fff;border:2px solid #A6122E">S</span>' +
       '<span><b style="display:block;font-size:17px;color:#A6122E">SolidWorks Simulation</b>' +
@@ -2102,7 +2188,7 @@ function choiceHTML() {
       '<p class="p" style="margin:12px 0 0;text-align:left">Análises mais simples e relatório mais prático. ' +
       D.SW.length + ' estudos mecânicos, com os menus em português.</p></button>' +
     '<button class="row" id="cDiff" style="margin-top:8px"><span class="dot" style="background:#12181D;color:#fff;border:2px solid #12181D">?</span>' +
-      '<span class="tx"><span class="n1" style="color:#12181D">Qual a diferença</span><span class="n2">Comparação lado a lado</span></span></button>' +
+      '<span class="tx"><span class="n1" style="color:#12181D">Qual a diferença</span><span class="n2">O que muda de um para o outro</span></span></button>' +
 
     '<p style="text-align:center;font-size:13px;color:var(--ink3);margin:26px 0 0">By Luiz Freitas</p>' +
     '</div>';
@@ -2197,6 +2283,7 @@ function animForItem(it) {
 }
 function renderHome() {
   if (!S.prg || showChoice) {
+    document.body.classList.add('choice');
     $('#topsub').textContent = 'Tutoriais para simulações';
     $('#bprog').style.display = 'none';
     applyProg();
@@ -2205,6 +2292,7 @@ function renderHome() {
     return;
   }
   var sw = S.prg === 'sw';
+  document.body.classList.remove('choice');
   applyProg();
   var list = sw ? D.SW : D.ANSYS;
   $('#topsub').textContent = sw ? 'SolidWorks Simulation' : 'Ansys Workbench';
@@ -2213,9 +2301,9 @@ function renderHome() {
   $('#bprog').style.background = 'var(--soft)';
   $('#bprog').style.color = 'var(--accink)';
   var h = '';
-  h += '<div class="wrap" style="padding-top:14px"><h2 class="dsp" style="font-size:23px">' +
+  h += '<div class="wrap" style="padding-top:14px"><h2 class="dsp" style="font-size:25px">' +
     (sw ? 'O que o SolidWorks Simulation calcula' : 'O que o Ansys calcula') + '</h2>' +
-    '<p style="font-size:14px;color:var(--ink2);margin:8px 0 0;line-height:1.6">' +
+    '<p style="font-size:14.5px;color:var(--ink2);margin:8px 0 0;line-height:1.6">' +
     (sw ? 'Os oito estudos mecânicos, com o passo a passo de cada um.' :
           'As oito análises principais, em destaque. Toque para ver o que cada uma faz, por que se calcula aquilo e o que ela entrega.') +
     '</p></div>';
@@ -2225,9 +2313,10 @@ function renderHome() {
     var fg = animFor(a.id);
     return '<button class="pick withfig" data-i="' + i + '" style="--k:' + kv(a.k) + '">' +
       (fg ? '<span class="thumb">' + fg + '</span>' : '') +
-      '<span class="tx"><span style="display:block;font-size:15.5px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">' + E(a.n) + '</span>' +
-      (tr ? '<span style="display:block;font-size:12.5px;color:var(--accink);font-weight:600;margin-top:2px">' + E(tr) + '</span>' : '') +
-      '<span style="display:block;font-size:13px;color:var(--ink2);line-height:1.5;margin-top:5px">' + E(a.q) + '</span></span></button>';
+      '<span class="tx"><span style="display:block;font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">' + E(a.n) + '</span>' +
+      (tr ? '<span style="display:block;font-size:13px;color:var(--accink);font-weight:600;margin-top:2px">' + E(tr) + '</span>' : '') +
+      '<span style="display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#fff;background:' + kv(a.k) + ';padding:3px 9px;border-radius:20px">' + E(DISC[a.k] || '') + '</span>' +
+      '<span style="display:block;font-size:13.5px;color:var(--ink2);line-height:1.55;margin-top:6px">' + E(a.q) + '</span></span></button>';
   }).join('');
   if (!sw) {
     h += '<button class="row" id="goWB" style="margin-top:6px"><span class="dot">?</span>' +
