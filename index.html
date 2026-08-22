@@ -318,6 +318,37 @@ html[data-theme="dark"] .mfig{background:rgba(255,255,255,.06)}
 #sfoot .btn.sm{order:2}
 #sfoot .btn.pri{order:1}
 
+/* ===== salvar, historico e conclusao ===== */
+#sfoot .foot2{display:flex;gap:8px;width:100%}
+#sfoot .foot2 .btn{width:auto;flex:1;order:0}
+.btn.dang{color:var(--bad);background:var(--card2);border:1px solid var(--rule)}
+.ck.sel{border-color:var(--k,var(--acc))}
+.ck.sel .bx{background:var(--k,var(--acc));border-color:var(--k,var(--acc))}
+.ck.sel .bx svg{display:block}
+.pbar{display:block;height:6px;border-radius:3px;background:var(--rule);overflow:hidden;margin:8px 0 0}
+.pbar i{display:block;height:100%;background:var(--acc);border-radius:3px}
+#dlg{position:fixed;inset:0;z-index:80;background:rgba(8,12,16,.55);display:none;
+align-items:flex-end;justify-content:center}
+#dlg.on{display:flex}
+.dlgbox{background:var(--card);width:100%;max-width:520px;border-radius:18px 18px 0 0;
+padding:20px 18px calc(var(--sab) + 18px);border-top:1px solid var(--rule)}
+.dlgbox h3{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0 0 7px}
+.dlgbox p{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 14px;text-align:left}
+.dlgbox input{width:100%;background:var(--sunk);border:1px solid var(--rule);border-radius:12px;
+padding:13px 14px;font-size:15px;color:var(--ink);font-family:inherit;margin-bottom:14px}
+.dlgb{display:flex;gap:8px}
+.dlgb .btn{flex:1;width:auto}
+#fin{position:fixed;inset:0;z-index:90;background:var(--paper);display:none;flex-direction:column;
+align-items:center;justify-content:center;text-align:center;
+padding:calc(var(--sat) + 30px) 26px calc(var(--sab) + 26px)}
+#fin.on{display:flex}
+#fin .fchk{width:96px;height:96px;border-radius:50%;background:var(--soft);display:grid;
+place-items:center;margin-bottom:22px}
+#fin .fchk svg{width:46px;height:46px;color:var(--accink)}
+#fin h3{font-size:27px;font-weight:800;letter-spacing:-.03em;margin:0 0 10px}
+#fin p{font-size:15px;color:var(--ink2);line-height:1.6;margin:0 0 6px;max-width:340px;text-align:center}
+#fin .fbtn{margin-top:28px;max-width:300px;width:100%;flex:0 0 auto}
+
 /* ===== passos: título e descrição em linhas separadas ===== */
 .step{display:flex;gap:11px;align-items:flex-start;width:100%;background:var(--card);
 border:1px solid var(--rule);border-radius:12px;padding:12px 13px;margin-bottom:8px;text-align:left}
@@ -623,6 +654,9 @@ border-radius:20px;padding:7px 12px;font-size:12px;font-weight:700;margin-right:
   <div id="sfoot" style="display:none;padding:12px 16px calc(var(--sab) + 12px);background:var(--card);border-top:1px solid var(--rule);gap:8px;flex-direction:column"></div>
 </div>
 
+<div id="dlg"></div>
+<div id="fin"></div>
+
 <nav id="tabs">
   <button data-v="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>Início</button>
   <button data-v="prod" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 16l9 5 9-5M3 12l9 5 9-5"/></svg>Produtos</button>
@@ -739,7 +773,12 @@ function goHome() {
   renderHome(); window.scrollTo(0, 0);
 }
 function push(v) { STACK.push(v); history.pushState({ n: STACK.length }, ''); paintStack(true); }
-window.addEventListener('popstate', function () { if (STACK.length) { STACK.pop(); paintStack(); } });
+window.addEventListener('popstate', function () {
+  if (!STACK.length) return;
+  var top = STACK[STACK.length - 1];
+  if (top && top.guard && top.guard() === 'block') { history.pushState({ n: STACK.length }, ''); return; }
+  STACK.pop(); paintStack();
+});
 $('#sfav').addEventListener('click', function () {
   var v = STACK[STACK.length - 1]; if (!v || !v.fav) return;
   var i = FAV.indexOf(v.fav); if (i >= 0) FAV.splice(i, 1); else FAV.push(v.fav);
@@ -760,7 +799,8 @@ function paintStack(fresh) {
   fv.style.display = v.fav ? 'grid' : 'none';
   if (v.fav) fv.style.color = FAV.indexOf(v.fav) >= 0 ? '#EF9F27' : 'var(--ink3)';
   var ft = $('#sfoot');
-  if (v.foot) { ft.style.display = 'flex'; ft.innerHTML = v.foot(); ft.style.setProperty('--k', v.k ? kvar(v.k) : 'var(--acc)'); }
+  var fh = v.foot ? v.foot() : '';
+  if (fh) { ft.style.display = 'flex'; ft.innerHTML = fh; ft.style.setProperty('--k', v.k ? kvar(v.k) : 'var(--acc)'); }
   else { ft.style.display = 'none'; ft.innerHTML = ''; }
   if (v.bind) v.bind();
 }
@@ -2136,11 +2176,20 @@ function openTutorial(cfg){
   var it=BY[cfg.en];
   var rec=SAVED[cfg.id];
   if(!rec){ rec={id:cfg.id,en:cfg.en,k:cfg.k,have:cfg.have,shape:cfg.shape,res:cfg.res,labels:cfg.labels,done:{},note:'',ts:Date.now()}; }
+  if(cfg._done){ rec.done={}; for(var _dk in cfg._done){ if(cfg._done[_dk]) rec.done[_dk]=true; } }
   rec.ts=Date.now();
   var G=buildGroups(cfg), total=0;
   G.forEach(function(gr){ if(gr.s) total+=gr.s.length; });
   if(cfg.rep) total+=REPSTEPS.ansys.length;
   rec.total=total; SAVED[cfg.id]=rec; saveAll();
+
+  RUN = {
+    p:'ansys', title:cfg.en, k:cfg.k, total:total,
+    uid:cfg._uid||null, name:cfg._name||'', dirty:false,
+    cfg:{en:cfg.en,k:cfg.k,have:cfg.have,shape:cfg.shape,res:cfg.res,rep:!!cfg.rep,labels:cfg.labels,id:cfg.id},
+    keys:function(){ var o=[]; for(var q in rec.done){ if(rec.done[q]) o.push(q); } return o; },
+    clear:function(){ delete SAVED[cfg.id]; saveAll(); }
+  };
 
   function count(){ var n=0; for(var kk in rec.done) if(rec.done[kk]) n++; return n; }
   push({
@@ -2178,8 +2227,10 @@ function openTutorial(cfg){
       }
       return h;
     },
-    foot:function(){ return '<button class="btn pri" id="tdone" style="flex:1">Concluir</button>'; },
+    guard:tutGuard,
+    foot:function(){ return tutFoot(); },
     bind:function(){
+      tutBindFoot();
       function upd(){
         var n=count(), pc=rec.total?Math.round(n/rec.total*100):0;
         $('#pbar').style.width=pc+'%'; $('#pnum').textContent=n+' de '+rec.total+' passos · '+pc+'%';
@@ -2188,11 +2239,11 @@ function openTutorial(cfg){
         b.addEventListener('click',function(){
           var key=b.getAttribute('data-k');
           rec.done[key]=!rec.done[key];
+          if(RUN) RUN.dirty=true;
           saveAll(); vib(); paintStack();
         });
       });
       upd();
-      $('#tdone').addEventListener('click',function(){ vib(); goHome(); });
     }
   });
 }
@@ -2774,14 +2825,25 @@ function swGroups(a, sel, rep) {
   return G;
 }
 
-function openSWTut(a, sel, rep) {
+function openSWTut(a, sel, rep, opts) {
   var res = swRes(a.id);
   sel = sel || res.map(function (_, i) { return i; });
+  opts = opts || {};
   var G = swGroups(a, sel, rep), total = 0;
   G.forEach(function (gr) { if (gr.s) total += gr.s.length; });
-  S.progT = S.progT || {}; S.progT[a.id] = total; save();
+  S.progT = S.progT || {}; S.progT[a.id] = total;
+  if (opts.done) S.prog[a.id] = opts.done.slice();
+  save();
+  RUN = {
+    p:'sw', title:a.n, k:a.k, total:total,
+    uid:opts.uid||null, name:opts.name||'', dirty:false,
+    cfg:{aid:a.id, sel:sel.slice(), rep:!!rep},
+    keys:function(){ return (S.prog[a.id]||[]).slice(); },
+    clear:function(){ delete S.prog[a.id]; if(S.progT) delete S.progT[a.id]; save(); }
+  };
   push({
     t1: a.n, t2: 'Tutorial · toque para marcar', k: a.k,
+    guard: tutGuard,
     html: function () {
       var done = S.prog[a.id] || [];
       var n = 0; done.forEach(function (x) { if (String(x).indexOf('.') > 0) n++; });
@@ -2813,16 +2875,16 @@ function openSWTut(a, sel, rep) {
       });
       return h;
     },
-    foot: function () { return '<button class="btn pri" id="tdone" style="flex:1">Concluir</button>'; },
+    foot: function () { return tutFoot(); },
     bind: function () {
+      tutBindFoot();
       $$('#sbody .step').forEach(function (b) {
         b.addEventListener('click', function () {
           var key = b.getAttribute('data-k'), arr = S.prog[a.id] || [], p = arr.indexOf(key);
           if (p >= 0) arr.splice(p, 1); else arr.push(key);
-          S.prog[a.id] = arr; save(); vib(12); paintStack(); renderSaved();
+          S.prog[a.id] = arr; if (RUN) RUN.dirty = true; save(); vib(12); paintStack();
         });
       });
-      var td = $('#tdone'); if (td) td.addEventListener('click', function () { vib(); goHome(); });
     }
   });
 }
@@ -3255,10 +3317,10 @@ function openDiff() {
 
 function openAbout() {
   push({
-    t1: 'Sobre', t2: 'SimuGuia 3.0',
+    t1: 'Sobre', t2: 'SimuGuia 3.5',
     html: function () {
-      return '<table class="tbl"><tr><td>Versão</td><td>3.0</td></tr>' +
-        '<tr><td>Conteúdo atualizado em</td><td>16/08/2026</td></tr>' +
+      return '<table class="tbl"><tr><td>Versão</td><td>3.5</td></tr>' +
+        '<tr><td>Conteúdo atualizado em</td><td>22/08/2026</td></tr>' +
         '<tr><td>Análises do Ansys</td><td>' + D.ANSYS.length + '</td></tr>' +
         '<tr><td>Estudos do SolidWorks</td><td>' + D.SW.length + '</td></tr>' +
         '<tr><td>Mensagens de erro</td><td>' + D.ERRORS.length + '</td></tr>' +
@@ -3528,41 +3590,278 @@ function renderTools() {
   $$('#v-tools .row').forEach(function (b, i) { b.addEventListener('click', function () { vib(); L[i][2](); }); });
 }
 
-function renderSaved() {
-  var all = D.ANSYS.concat(D.SW).filter(function (a) { return (S.prog[a.id] || []).length; });
-  if (!all.length) {
-    $('#v-saved').innerHTML = '<div class="wrap" style="padding-top:16px"><h2 class="dsp" style="font-size:24px">Salvos</h2>' +
-      '<p style="font-size:14px;color:var(--ink2);margin:10px 0 0;line-height:1.6">Assim que você marcar o primeiro passo de um tutorial, ele aparece aqui com o progresso guardado no aparelho.</p></div>';
-    return;
+/* ================== salvar, histórico e conclusão ==================
+   Cada programa tem a sua lista: o que é salvo dentro do módulo Ansys
+   nunca aparece no módulo SolidWorks, e vice-versa. */
+
+var SLOTS = DB.get('slots', {ansys:[], sw:[]});
+var HIST  = DB.get('hist',  {ansys:[], sw:[]});
+if(!SLOTS.ansys) SLOTS.ansys=[]; if(!SLOTS.sw) SLOTS.sw=[];
+if(!HIST.ansys)  HIST.ansys=[];  if(!HIST.sw)  HIST.sw=[];
+function slotsSave(){ DB.set('slots', SLOTS); DB.set('hist', HIST); }
+function curProg(){ return S.prg === 'sw' ? 'sw' : 'ansys'; }
+function progNm(p){ return p === 'sw' ? 'SolidWorks Simulation' : 'Ansys Workbench'; }
+function newUid(){ return 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function dtxt(ts){
+  var d = new Date(ts || Date.now());
+  function z(n){ return (n < 10 ? '0' : '') + n; }
+  return z(d.getDate()) + '/' + z(d.getMonth()+1) + '/' + d.getFullYear() + ' \u00e0s ' + z(d.getHours()) + ':' + z(d.getMinutes());
+}
+var RUN = null, DLG = null;
+var ICK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l6 6L20 6"/></svg>';
+var ITRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></svg>';
+
+/* ---------- janelinha ---------- */
+function dlgShow(kind, inner){
+  DLG = kind;
+  var d = $('#dlg');
+  d.innerHTML = '<div class="dlgbox">' + inner + '</div>';
+  d.classList.add('on');
+}
+function dlgClose(){ DLG = null; var d = $('#dlg'); d.classList.remove('on'); d.innerHTML = ''; }
+
+function askName(kind, def, cb){
+  dlgShow(kind,
+    '<h3>Salvar tutorial</h3>' +
+    '<p>D\u00ea um nome para reconhecer este tutorial depois, na aba Salvos.</p>' +
+    '<input id="dlgin" type="text" maxlength="60" value="' + E(def) + '">' +
+    '<div class="dlgb"><button class="btn" id="dlgno">Cancelar</button>' +
+    '<button class="btn pri" id="dlgok">Salvar</button></div>');
+  var inp = $('#dlgin');
+  setTimeout(function(){ try { inp.focus(); inp.setSelectionRange(0, inp.value.length); } catch(e){} }, 90);
+  inp.addEventListener('keydown', function(ev){ if(ev.key === 'Enter'){ ev.preventDefault(); $('#dlgok').click(); } });
+  $('#dlgno').addEventListener('click', function(){ vib(); dlgClose(); });
+  $('#dlgok').addEventListener('click', function(){
+    var v = String(inp.value || '').replace(/\s+/g, ' ').trim();
+    if(!v) v = def;
+    dlgClose(); vib(12); cb(v);
+  });
+}
+
+/* ---------- rodape do tutorial: Salvar | Concluir ---------- */
+function tutFoot(){
+  return '<div class="foot2">' +
+    '<button class="btn" id="tsave">Salvar</button>' +
+    '<button class="btn pri" id="tdone">Concluir</button></div>';
+}
+function tutBindFoot(){
+  var sv = $('#tsave'); if(sv) sv.addEventListener('click', function(){ vib(); tutSaveDialog(false); });
+  var dn = $('#tdone'); if(dn) dn.addEventListener('click', function(){ vib(); tutFinish(); });
+}
+
+function tutSaveDialog(exiting){
+  if(!RUN) return;
+  askName(exiting ? 'nameout' : 'name', RUN.name || RUN.title, function(n){
+    putSlot(n);
+    if(exiting) tutLeave();
+    else toast('Guardado na aba Salvos.');
+  });
+}
+
+function putSlot(name){
+  if(!RUN) return null;
+  var arr = SLOTS[RUN.p] || (SLOTS[RUN.p] = []);
+  var r = { u: RUN.uid || newUid(), p: RUN.p, name: name, title: RUN.title, k: RUN.k || '',
+            cfg: RUN.cfg, done: RUN.keys(), total: RUN.total, ts: Date.now() };
+  var i = -1; arr.forEach(function(x, ix){ if(x.u === r.u) i = ix; });
+  if(i >= 0) arr[i] = r; else arr.unshift(r);
+  RUN.uid = r.u; RUN.name = name; RUN.dirty = false;
+  slotsSave(); renderSaved();
+  return r;
+}
+function toHist(r, why){
+  var h = HIST[r.p] || (HIST[r.p] = []);
+  r.why = why; r.hts = Date.now();
+  h.unshift(r);
+  if(h.length > 80) h.length = 80;
+}
+function dropSlot(p, u, toTrash){
+  var arr = SLOTS[p] || [], i = -1;
+  arr.forEach(function(x, ix){ if(x.u === u) i = ix; });
+  if(i < 0) return;
+  var r = arr.splice(i, 1)[0];
+  if(toTrash) toHist(r, 'lixo');
+  slotsSave();
+}
+
+/* ---------- sair, concluir ---------- */
+function tutLeave(){
+  if(RUN){ RUN.clear(); RUN = null; }
+  renderSaved();
+  if(STACK.length) history.back();
+}
+function tutFinish(){
+  if(!RUN){ goHome(); return; }
+  var n = RUN.keys().length, tot = RUN.total, ttl = RUN.title;
+  var r = { u: RUN.uid || newUid(), p: RUN.p, name: RUN.name || RUN.title, title: ttl,
+            k: RUN.k || '', cfg: RUN.cfg, done: RUN.keys(), total: tot, ts: Date.now() };
+  if(RUN.uid) dropSlot(RUN.p, RUN.uid, false);
+  toHist(r, 'fim');
+  RUN.clear(); RUN = null;
+  slotsSave(); renderSaved();
+  showFin(ttl, n, tot);
+}
+function showFin(ttl, n, tot){
+  var f = $('#fin');
+  f.innerHTML = '<div class="fchk">' + ICK + '</div>' +
+    '<h3>Tutorial conclu\u00eddo</h3>' +
+    '<p><b>' + E(ttl) + '</b></p>' +
+    '<p>' + n + ' de ' + tot + ' passos marcados. Ele foi para o hist\u00f3rico, dentro da aba Salvos.</p>' +
+    '<button class="btn pri fbtn" id="finok">Voltar ao in\u00edcio</button>';
+  f.classList.add('on');
+  $('#finok').addEventListener('click', function(){
+    vib(); f.classList.remove('on'); f.innerHTML = ''; goHome();
+  });
+}
+
+/* ---------- o botao voltar do celular dentro do tutorial ---------- */
+function tutGuard(){
+  if(!RUN) return;
+  if(DLG){
+    if(DLG === 'name'){ dlgClose(); return 'block'; }
+    dlgClose(); RUN.clear(); RUN = null; renderSaved(); return;
   }
-  $('#v-saved').innerHTML = '<div class="wrap" style="padding-top:16px"><h2 class="dsp" style="font-size:24px">Salvos</h2></div><div class="wrap" style="margin-top:14px">' +
-    all.map(function (a) {
-      var tot = (S.progT && S.progT[a.id]) ? S.progT[a.id] : a.st.length;
-      var dn = (S.prog[a.id] || []).length, pc = Math.min(100, Math.round(dn / tot * 100));
-      return '<div class="row" style="align-items:center"><button data-id="' + a.id + '" class="tx" style="background:none;flex:1">' +
-        '<span class="n1">' + E(a.n) + '</span>' +
-        '<span class="n2">' + dn + ' de ' + tot + ' passos · ' + pc + '%</span>' +
-        '<span class="prog" style="margin:8px 0 0"><i style="width:' + pc + '%"></i></span></button>' +
-        '<button class="ib" data-del="' + a.id + '" aria-label="Excluir progresso" style="flex:0 0 40px">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">' +
-        '<path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></svg></button></div>';
-    }).join('') + '</div>';
-  $$('#v-saved [data-del]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var id = b.getAttribute('data-del');
-      delete S.prog[id];
-      if (SAVED) { Object.keys(SAVED).forEach(function (k) { if (k.indexOf(id + '|') === 0) delete SAVED[k]; }); saveAll(); }
-      if (S.last === id) S.last = null;
-      save(); vib(15); renderSaved(); renderHome();
+  if(!RUN.dirty){ RUN.clear(); RUN = null; renderSaved(); return; }
+  dlgShow('exit',
+    '<h3>Sair sem salvar?</h3>' +
+    '<p>Voc\u00ea marcou passos neste tutorial. Se sair agora, as marca\u00e7\u00f5es se perdem. ' +
+    'Toque em Salvar para guard\u00e1-lo com um nome e voltar depois de onde parou.</p>' +
+    '<button class="btn pri" id="dlgsv" style="width:100%;margin-bottom:8px">Salvar</button>' +
+    '<div class="dlgb"><button class="btn" id="dlgnao">N\u00e3o</button>' +
+    '<button class="btn dang" id="dlgsim">Sim, sair</button></div>');
+  $('#dlgsv').addEventListener('click', function(){ vib(); dlgClose(); tutSaveDialog(true); });
+  $('#dlgnao').addEventListener('click', function(){ vib(); dlgClose(); });
+  $('#dlgsim').addEventListener('click', function(){ vib(); dlgClose(); tutLeave(); });
+  return 'block';
+}
+
+/* ---------- reabrir um tutorial salvo ---------- */
+function openSlot(r){
+  if(!r) return;
+  if(r.p === 'sw'){
+    var a = swById(r.cfg.aid);
+    if(!a) return;
+    openSWTut(a, (r.cfg.sel || []).slice(), !!r.cfg.rep,
+      { uid: r.u, name: r.name, done: (r.done || []).slice() });
+  } else {
+    var d = {}; (r.done || []).forEach(function(k){ d[k] = true; });
+    var c = {}; for(var q in r.cfg) c[q] = r.cfg[q];
+    c._done = d; c._uid = r.u; c._name = r.name;
+    openTutorial(c);
+  }
+}
+
+/* ---------- aba Salvos ---------- */
+function renderSaved() {
+  var p = curProg(), arr = SLOTS[p] || [], nh = (HIST[p] || []).length;
+  var h = '<div class="wrap" style="padding-top:16px">' +
+    '<h2 class="dsp" style="font-size:24px">Salvos</h2>' +
+    '<p style="font-size:13px;color:var(--ink3);margin:7px 0 0;line-height:1.5">' +
+    progNm(p) + ' \u00b7 cada programa guarda os seus</p></div>' +
+    '<div class="wrap" style="margin-top:14px">';
+  h += '<button class="row" id="bhist"><span class="tx">' +
+    '<span class="n1">Hist\u00f3rico</span><span class="n2">' +
+    (nh ? nh + (nh > 1 ? ' itens conclu\u00eddos ou exclu\u00eddos' : ' item conclu\u00eddo ou exclu\u00eddo')
+        : 'Nada por aqui ainda') + '</span></span>' +
+    '<svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg></button>';
+  if(!arr.length){
+    h += '<p style="font-size:14px;color:var(--ink2);margin:16px 0 0;line-height:1.6">' +
+      'Nenhum tutorial salvo neste programa. Dentro de um tutorial, o bot\u00e3o <b>Salvar</b> ' +
+      'guarda o andamento com o nome que voc\u00ea escolher, e ele aparece aqui.</p>';
+  } else {
+    h += '<p class="lbl">Seus tutoriais salvos</p>';
+    h += arr.map(function(r, i){
+      var tot = r.total || 1, dn = (r.done || []).length;
+      var pc = Math.min(100, Math.round(dn / tot * 100));
+      return '<div class="row" style="align-items:center">' +
+        '<button data-o="' + i + '" class="tx" style="background:none;flex:1">' +
+        '<span class="n1">' + E(r.name) + '</span>' +
+        '<span class="n2">' + E(r.title) + ' \u00b7 ' + dn + ' de ' + tot + ' passos \u00b7 ' + pc + '%</span>' +
+        '<span class="pbar"><i style="width:' + pc + '%"></i></span></button>' +
+        '<button class="ib" data-x="' + i + '" aria-label="Excluir">' + ITRASH + '</button></div>';
+    }).join('');
+  }
+  h += '</div>';
+  $('#v-saved').innerHTML = h;
+
+  var bh = $('#bhist');
+  if(bh) bh.addEventListener('click', function(){ vib(); openHist(); });
+  $$('#v-saved [data-o]').forEach(function(b){
+    b.addEventListener('click', function(){
+      vib(); openSlot((SLOTS[curProg()] || [])[+b.getAttribute('data-o')]);
     });
   });
-  $$('#v-saved [data-id]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var id = b.getAttribute('data-id'), a = null, sw = false;
-      D.ANSYS.forEach(function (x) { if (x.id === id) a = x; });
-      D.SW.forEach(function (x) { if (x.id === id) { a = x; sw = true; } });
-      if (a) { vib(); openAnalysis(a, sw ? 'sw' : 'ansys'); }
+  $$('#v-saved [data-x]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var r = (SLOTS[curProg()] || [])[+b.getAttribute('data-x')];
+      if(!r) return;
+      vib(15); dropSlot(r.p, r.u, true); renderSaved();
     });
+  });
+}
+
+/* ---------- historico ---------- */
+function openHist(){
+  var p = curProg(), sel = {};
+  push({
+    t1: 'Hist\u00f3rico', t2: progNm(p),
+    html: function(){
+      var arr = HIST[p] || [];
+      if(!arr.length){
+        return '<div class="tip">Aqui fica o registro do que voc\u00ea concluiu e do que apagou dos salvos. ' +
+          'Neste programa ainda n\u00e3o h\u00e1 nada guardado.</div>';
+      }
+      var h = '<p class="qs">Marque na caixinha os que quiser e use os bot\u00f5es de baixo para restaurar ou apagar de vez.</p>';
+      h += arr.map(function(r){
+        var tot = r.total || 1, dn = (r.done || []).length;
+        return '<button class="ck' + (sel[r.u] ? ' sel' : '') + '" data-u="' + r.u + '">' +
+          '<span class="bx">' + ICK + '</span>' +
+          '<span style="flex:1;min-width:0">' +
+          '<span class="n1">' + E(r.name || r.title) + '</span>' +
+          '<span class="n2">' + (r.why === 'fim' ? 'Conclu\u00eddo' : 'Exclu\u00eddo') + ' em ' + dtxt(r.hts) +
+          ' \u00b7 ' + dn + ' de ' + tot + ' passos</span>' +
+          '<span class="pth">' + E(r.title) + '</span></span></button>';
+      }).join('');
+      return h;
+    },
+    foot: function(){
+      if(!(HIST[p] || []).length) return '';
+      return '<div class="foot2"><button class="btn pri" id="hres">Restaurar</button>' +
+        '<button class="btn dang" id="hdel">Excluir</button></div>';
+    },
+    bind: function(){
+      $$('#sbody .ck').forEach(function(b){
+        b.addEventListener('click', function(){
+          var u = b.getAttribute('data-u');
+          sel[u] = !sel[u];
+          b.classList.toggle('sel');
+          vib();
+        });
+      });
+      function marcados(){ var o = []; for(var u in sel){ if(sel[u]) o.push(u); } return o; }
+      var hr = $('#hres');
+      if(hr) hr.addEventListener('click', function(){
+        var us = marcados();
+        if(!us.length) return toast('Marque pelo menos um.');
+        us.forEach(function(u){
+          var arr = HIST[p], i = -1;
+          arr.forEach(function(x, ix){ if(x.u === u) i = ix; });
+          if(i < 0) return;
+          var r = arr.splice(i, 1)[0];
+          delete r.why; delete r.hts; r.ts = Date.now();
+          (SLOTS[p] || (SLOTS[p] = [])).unshift(r);
+        });
+        sel = {}; slotsSave(); vib(15); renderSaved(); paintStack();
+        toast('Restaurado para os Salvos.');
+      });
+      var hd = $('#hdel');
+      if(hd) hd.addEventListener('click', function(){
+        var us = marcados();
+        if(!us.length) return toast('Marque pelo menos um.');
+        HIST[p] = (HIST[p] || []).filter(function(x){ return us.indexOf(x.u) < 0; });
+        sel = {}; slotsSave(); vib(15); renderSaved(); paintStack();
+      });
+    }
   });
 }
 
