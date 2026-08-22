@@ -355,6 +355,11 @@ background:var(--ink);color:var(--paper);border-radius:12px;padding:13px 15px;fo
 font-weight:600;text-align:center;opacity:0;transform:translateY(10px);pointer-events:none;
 transition:opacity .22s,transform .22s}
 #flash.on{opacity:.96;transform:translateY(0)}
+.bkta{width:100%;min-height:96px;background:var(--sunk);border:1px solid var(--rule);
+border-radius:12px;padding:12px;font-size:12.5px;color:var(--ink);font-family:ui-monospace,Menlo,Consolas,monospace;
+line-height:1.5;resize:vertical;margin:0 0 10px}
+.bkb{display:flex;gap:8px;margin-bottom:10px}
+.bkb .btn{flex:1;width:auto}
 
 /* ===== passos: título e descrição em linhas separadas ===== */
 .step{display:flex;gap:11px;align-items:flex-start;width:100%;background:var(--card);
@@ -686,7 +691,16 @@ function vib(n) { try { if (navigator.vibrate) navigator.vibrate(n || 8); } catc
 /* ---------- armazenamento ---------- */
 var S = { prog: {}, theme: null, intro: 0, prg: null, last: null };
 try { var raw = localStorage.getItem('simuguia3'); if (raw) S = JSON.parse(raw); } catch (e) {}
-function save() { try { localStorage.setItem('simuguia3', JSON.stringify(S)); } catch (e) {} }
+function save() { try { localStorage.setItem('simuguia3', JSON.stringify(S)); return true; } catch (e) { return false; } }
+
+/* pede ao sistema para nao descartar o armazenamento quando faltar espaco */
+try {
+  if (navigator.storage && navigator.storage.persist) {
+    if (navigator.storage.persisted) {
+      navigator.storage.persisted().then(function (ok) { if (!ok) navigator.storage.persist(); }).catch(function () {});
+    } else { navigator.storage.persist(); }
+  }
+} catch (e) {}
 
 /* ---------- tema ---------- */
 var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6l-1.5 1.5"/></svg>';
@@ -861,7 +875,7 @@ var KCOLS=['str','vib','ter','flu','imp','otm','emg','acu','hid','fer'];
 function kvar(k){ return 'var(--'+(KCOLS.indexOf(k)>=0?k:'fer')+')'; }
 var DB = {
   get:function(k,d){ try{ var v=localStorage.getItem('sg3.'+k); return v?JSON.parse(v):d; }catch(e){ return d; } },
-  set:function(k,v){ try{ localStorage.setItem('sg3.'+k, JSON.stringify(v)); }catch(e){} }
+  set:function(k,v){ try{ localStorage.setItem('sg3.'+k, JSON.stringify(v)); return true; }catch(e){ return false; } }
 };
 var SAVED = DB.get('saved',{}), FAV = DB.get('fav',[]);
 function saveAll(){ DB.set('saved',SAVED); DB.set('fav',FAV); }
@@ -2195,6 +2209,7 @@ function openTutorial(cfg){
   RUN = {
     p:'ansys', title:cfg.en, k:cfg.k, total:total,
     uid:cfg._uid||null, name:cfg._name||'', dirty:false,
+    ini:Date.now(), ini0:cfg._ini0 || Date.now(),
     cfg:{en:cfg.en,k:cfg.k,have:cfg.have,shape:cfg.shape,res:cfg.res,rep:!!cfg.rep,labels:cfg.labels,id:cfg.id},
     keys:function(){ var o=[]; for(var q in rec.done){ if(rec.done[q]) o.push(q); } return o; },
     clear:function(){ delete SAVED[cfg.id]; saveAll(); }
@@ -2846,6 +2861,7 @@ function openSWTut(a, sel, rep, opts) {
   RUN = {
     p:'sw', title:a.n, k:a.k, total:total,
     uid:opts.uid||null, name:opts.name||'', dirty:false,
+    ini:Date.now(), ini0:opts.ini0 || Date.now(),
     cfg:{aid:a.id, sel:sel.slice(), rep:!!rep},
     keys:function(){ return (S.prog[a.id]||[]).slice(); },
     clear:function(){ delete S.prog[a.id]; if(S.progT) delete S.progT[a.id]; save(); }
@@ -3326,9 +3342,9 @@ function openDiff() {
 
 function openAbout() {
   push({
-    t1: 'Sobre', t2: 'SimuGuia 3.7',
+    t1: 'Sobre', t2: 'SimuGuia 3.8',
     html: function () {
-      return '<table class="tbl"><tr><td>Versão</td><td>3.7</td></tr>' +
+      return '<table class="tbl"><tr><td>Versão</td><td>3.8</td></tr>' +
         '<tr><td>Conteúdo atualizado em</td><td>22/08/2026</td></tr>' +
         '<tr><td>Análises do Ansys</td><td>' + D.ANSYS.length + '</td></tr>' +
         '<tr><td>Estudos do SolidWorks</td><td>' + D.SW.length + '</td></tr>' +
@@ -3590,6 +3606,7 @@ function renderTools() {
     ['Melhore a peça', 'Seis mudanças de projeto, com antes e depois', openImprove],
     ['Polegada para milímetro', 'Fração composta e a tabela das mais usadas', openInch],
     ['Qual a diferença', 'SolidWorks e Ansys, lado a lado', openDiff],
+    ['Backup dos salvos', 'Exportar para arquivo e trazer de volta', openBackup],
     ['Sobre o SimuGuia', 'Versão, contato e aviso legal', openAbout]];
   $('#v-tools').innerHTML = '<div class="wrap" style="padding-top:16px"><h2 class="dsp" style="font-size:24px">Ferramentas</h2></div>' +
     '<div class="wrap" style="margin-top:14px">' + L.map(function (l, i) {
@@ -3607,7 +3624,12 @@ var SLOTS = DB.get('slots', {ansys:[], sw:[]});
 var HIST  = DB.get('hist',  {ansys:[], sw:[]});
 if(!SLOTS.ansys) SLOTS.ansys=[]; if(!SLOTS.sw) SLOTS.sw=[];
 if(!HIST.ansys)  HIST.ansys=[];  if(!HIST.sw)  HIST.sw=[];
-function slotsSave(){ DB.set('slots', SLOTS); DB.set('hist', HIST); }
+var SAVE_OK = true;
+function slotsSave(){
+  var a = DB.set('slots', SLOTS), b = DB.set('hist', HIST);
+  SAVE_OK = !!(a && b);
+  return SAVE_OK;
+}
 function curProg(){ return S.prg === 'sw' ? 'sw' : 'ansys'; }
 function progNm(p){ return p === 'sw' ? 'SolidWorks Simulation' : 'Ansys Workbench'; }
 function newUid(){ return 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
@@ -3713,6 +3735,15 @@ function tutSaveDialog(exiting){
 }
 function concluirSalvamento(nome, atualizando){
   var r = putSlot(nome);
+  if(!SAVE_OK){
+    dlgShow('erro',
+      '<h3>N\u00e3o consegui gravar</h3>' +
+      '<p>O aparelho recusou a grava\u00e7\u00e3o. Costuma ser falta de espa\u00e7o, ou navega\u00e7\u00e3o an\u00f4nima. ' +
+      'Libere espa\u00e7o e toque em Salvar de novo. Seus passos marcados continuam na tela.</p>' +
+      '<button class="btn pri" id="dlgerrok" style="width:100%">Entendi</button>');
+    $('#dlgerrok').addEventListener('click', function(){ vib(); dlgClose(); });
+    return;
+  }
   if(RUN){ RUN.clear(); RUN = null; }
   renderSaved();
   goHome();
@@ -3729,7 +3760,8 @@ function putSlot(name){
   if(!RUN) return null;
   var arr = SLOTS[RUN.p] || (SLOTS[RUN.p] = []);
   var r = { u: RUN.uid || newUid(), p: RUN.p, name: name, title: RUN.title, k: RUN.k || '',
-            cfg: RUN.cfg, done: RUN.keys(), total: RUN.total, ts: Date.now() };
+            cfg: RUN.cfg, done: RUN.keys(), total: RUN.total, ts: Date.now(),
+            ini: RUN.ini, ini0: RUN.ini0 };
   var i = -1; arr.forEach(function(x, ix){ if(x.u === r.u) i = ix; });
   if(i >= 0) arr.splice(i, 1);
   arr.unshift(r);   /* o mais recente sempre no topo */
@@ -3760,9 +3792,27 @@ function tutLeave(){
 }
 function tutFinish(){
   if(!RUN){ goHome(); return; }
+  var falta = RUN.total - RUN.keys().length;
+  if(falta > 0){
+    dlgShow('fim',
+      '<h3>Concluir mesmo assim?</h3>' +
+      '<p>' + (falta > 1 ? 'Ainda faltam <b>' + falta + ' passos</b>' : 'Ainda falta <b>1 passo</b>') +
+      ' para marcar. Ao concluir, o tutorial vai para o hist\u00f3rico e come\u00e7a do zero na pr\u00f3xima vez. ' +
+      'Se quiser continuar depois de onde parou, use o <b>Salvar</b>.</p>' +
+      '<div class="dlgb"><button class="btn" id="dlgvolta">Voltar</button>' +
+      '<button class="btn pri" id="dlgfim">Concluir</button></div>');
+    $('#dlgvolta').addEventListener('click', function(){ vib(); dlgClose(); });
+    $('#dlgfim').addEventListener('click', function(){ vib(); dlgClose(); fecharTutorial(); });
+    return;
+  }
+  fecharTutorial();
+}
+function fecharTutorial(){
+  if(!RUN){ goHome(); return; }
   var n = RUN.keys().length, tot = RUN.total, ttl = RUN.title;
   var r = { u: RUN.uid || newUid(), p: RUN.p, name: RUN.name || RUN.title, title: ttl,
-            k: RUN.k || '', cfg: RUN.cfg, done: RUN.keys(), total: tot, ts: Date.now() };
+            k: RUN.k || '', cfg: RUN.cfg, done: RUN.keys(), total: tot, ts: Date.now(),
+            ini: RUN.ini, ini0: RUN.ini0 };
   if(RUN.uid) dropSlot(RUN.p, RUN.uid, false);
   toHist(r, 'fim');
   RUN.clear(); RUN = null;
@@ -3786,7 +3836,7 @@ function showFin(ttl, n, tot){
 function tutGuard(){
   if(!RUN) return;
   if(DLG){
-    if(DLG === 'name'){ dlgClose(); return 'block'; }
+    if(DLG === 'name' || DLG === 'fim'){ dlgClose(); return 'block'; }
     dlgClose(); RUN.clear(); RUN = null; renderSaved(); return;
   }
   if(!RUN.dirty){ RUN.clear(); RUN = null; renderSaved(); return; }
@@ -3810,11 +3860,11 @@ function openSlot(r){
     var a = swById(r.cfg.aid);
     if(!a) return;
     openSWTut(a, (r.cfg.sel || []).slice(), !!r.cfg.rep,
-      { uid: r.u, name: r.name, done: (r.done || []).slice() });
+      { uid: r.u, name: r.name, done: (r.done || []).slice(), ini0: r.ini0 || r.ini });
   } else {
     var d = {}; (r.done || []).forEach(function(k){ d[k] = true; });
     var c = {}; for(var q in r.cfg) c[q] = r.cfg[q];
-    c._done = d; c._uid = r.u; c._name = r.name;
+    c._done = d; c._uid = r.u; c._name = r.name; c._ini0 = r.ini0 || r.ini;
     openTutorial(c);
   }
 }
@@ -3836,6 +3886,14 @@ function renderSaved() {
     h += '<p style="font-size:14px;color:var(--ink2);margin:16px 0 0;line-height:1.6">' +
       'Nenhum tutorial salvo neste programa. Dentro de um tutorial, o bot\u00e3o <b>Salvar</b> ' +
       'guarda o andamento com o nome que voc\u00ea escolher, e ele aparece aqui.</p>';
+    var outro = (p === 'sw') ? 'ansys' : 'sw';
+    var nOutro = (SLOTS[outro] || []).length + (HIST[outro] || []).length;
+    if(nOutro){
+      h += '<button class="row" id="btroca" style="margin-top:14px"><span class="tx">' +
+        '<span class="n1">Voc\u00ea tem ' + nOutro + (nOutro > 1 ? ' itens' : ' item') + ' no outro m\u00f3dulo</span>' +
+        '<span class="n2">Est\u00e3o guardados em ' + progNm(outro) + '. Toque para trocar de programa.</span></span>' +
+        '<svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg></button>';
+    }
   } else {
     h += '<p class="lbl">Seus tutoriais salvos</p>';
     h += arr.map(function(r, i){
@@ -3855,6 +3913,14 @@ function renderSaved() {
 
   var bh = $('#bhist');
   if(bh) bh.addEventListener('click', function(){ vib(); openHist(); });
+  var bt = $('#btroca');
+  if(bt) bt.addEventListener('click', function(){
+    var outro = (curProg() === 'sw') ? 'ansys' : 'sw';
+    S.prg = outro; save(); vib();
+    try { applyProg(); } catch(e){}
+    renderHome(); renderProd(); renderSaved();
+    flash('Agora voc\u00ea est\u00e1 no m\u00f3dulo ' + progNm(outro));
+  });
   $$('#v-saved [data-o]').forEach(function(b){
     b.addEventListener('click', function(){
       vib(); openSlot((SLOTS[curProg()] || [])[+b.getAttribute('data-o')]);
@@ -3866,6 +3932,152 @@ function renderSaved() {
       if(!r) return;
       vib(15); dropSlot(r.p, r.u, true); renderSaved();
     });
+  });
+}
+
+/* ---------- backup: exportar e importar ---------- */
+function carimboArquivo(){
+  var d = new Date();
+  function z(n){ return (n < 10 ? '0' : '') + n; }
+  return d.getFullYear() + '-' + z(d.getMonth()+1) + '-' + z(d.getDate()) + '-' + z(d.getHours()) + z(d.getMinutes());
+}
+function contaTudo(){
+  return (SLOTS.ansys||[]).length + (SLOTS.sw||[]).length +
+         (HIST.ansys||[]).length + (HIST.sw||[]).length;
+}
+function pacoteTexto(){
+  return JSON.stringify({
+    app: 'SimuGuia', formato: 1,
+    exportadoEm: new Date().toISOString(),
+    salvos: SLOTS, historico: HIST
+  }, null, 2);
+}
+function baixarPacote(){
+  try {
+    var b = new Blob([pacoteTexto()], { type: 'application/json' });
+    var url = URL.createObjectURL(b);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'simuguia-backup-' + carimboArquivo() + '.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ try { document.body.removeChild(a); URL.revokeObjectURL(url); } catch(e){} }, 1500);
+    return true;
+  } catch(e){ return false; }
+}
+function importarPacote(obj){
+  if(!obj || (!obj.salvos && !obj.historico)) return { erro: 'Arquivo n\u00e3o reconhecido. Use um arquivo gerado pelo pr\u00f3prio SimuGuia.' };
+  var novos = 0, repetidos = 0;
+  ['ansys','sw'].forEach(function(pp){
+    if(!SLOTS[pp]) SLOTS[pp] = [];
+    if(!HIST[pp]) HIST[pp] = [];
+    ((obj.salvos && obj.salvos[pp]) || []).forEach(function(r){
+      if(!r || !r.u){ return; }
+      var existe = false;
+      SLOTS[pp].forEach(function(x){ if(x.u === r.u) existe = true; });
+      if(existe){ repetidos++; return; }
+      r.p = pp;
+      r.name = nomeLivre(pp, String(r.name || r.title || 'Tutorial'));
+      SLOTS[pp].push(r); novos++;
+    });
+    ((obj.historico && obj.historico[pp]) || []).forEach(function(r){
+      if(!r || !r.u){ return; }
+      var existe = false;
+      HIST[pp].forEach(function(x){ if(x.u === r.u) existe = true; });
+      if(existe){ repetidos++; return; }
+      r.p = pp; HIST[pp].push(r); novos++;
+    });
+  });
+  ['ansys','sw'].forEach(function(pp){
+    SLOTS[pp].sort(function(a,b){ return (b.ts||0) - (a.ts||0); });
+    HIST[pp].sort(function(a,b){ return (b.hts||0) - (a.hts||0); });
+    if(HIST[pp].length > 80) HIST[pp].length = 80;
+  });
+  if(!slotsSave()) return { erro: 'N\u00e3o consegui gravar no aparelho. Libere espa\u00e7o e tente de novo.' };
+  renderSaved();
+  return { novos: novos, repetidos: repetidos };
+}
+function lerTexto(txt){
+  var obj = null;
+  try { obj = JSON.parse(txt); } catch(e){ return { erro: 'O texto n\u00e3o est\u00e1 no formato certo.' }; }
+  return importarPacote(obj);
+}
+function avisaImport(res){
+  if(res.erro){ flash(res.erro); return; }
+  if(!res.novos){ flash('Nada novo para trazer \u00b7 tudo j\u00e1 estava aqui'); return; }
+  flash(res.novos + (res.novos > 1 ? ' itens trazidos' : ' item trazido') +
+        (res.repetidos ? ' \u00b7 ' + res.repetidos + ' j\u00e1 existiam' : ''));
+}
+
+function openBackup(){
+  push({
+    t1: 'Backup dos salvos', t2: 'Guardar fora do aparelho',
+    html: function(){
+      var n = contaTudo();
+      return '<div class="tip">Tudo o que voc\u00ea salva fica s\u00f3 neste aparelho. Se trocar de celular, ' +
+        'desinstalar o app ou limpar os dados do navegador, some. Exporte de vez em quando: ' +
+        'gera um arquivo que voc\u00ea guarda onde quiser e traz de volta quando precisar.</div>' +
+        '<p class="lbl">Agora voc\u00ea tem</p>' +
+        '<div class="row" style="align-items:center"><span class="tx">' +
+        '<span class="n1">' + n + (n === 1 ? ' item guardado' : ' itens guardados') + '</span>' +
+        '<span class="n2">Ansys: ' + (SLOTS.ansys||[]).length + ' salvos e ' + (HIST.ansys||[]).length + ' no hist\u00f3rico<br>' +
+        'SolidWorks: ' + (SLOTS.sw||[]).length + ' salvos e ' + (HIST.sw||[]).length + ' no hist\u00f3rico</span></span></div>' +
+        '<p class="lbl">Exportar</p>' +
+        '<div class="bkb"><button class="btn pri" id="bkdown">Baixar arquivo</button>' +
+        '<button class="btn" id="bkcopy">Copiar texto</button></div>' +
+        '<p style="font-size:13px;color:var(--ink3);line-height:1.55;margin:0 0 4px">' +
+        'O arquivo n\u00e3o \u00e9 enviado para lugar nenhum: ele fica no seu aparelho e s\u00f3 vai para onde voc\u00ea mandar.</p>' +
+        '<p class="lbl">Importar</p>' +
+        '<div class="bkb"><button class="btn pri" id="bkopen">Escolher arquivo</button></div>' +
+        '<textarea class="bkta" id="bktxt" placeholder="ou cole aqui o texto do backup"></textarea>' +
+        '<button class="btn" id="bkpaste" style="width:100%">Trazer do texto colado</button>' +
+        '<p style="font-size:13px;color:var(--ink3);line-height:1.55;margin:12px 0 0">' +
+        'Importar nunca apaga o que j\u00e1 est\u00e1 aqui: o que vier \u00e9 somado, e nome repetido ganha ' +
+        'numera\u00e7\u00e3o autom\u00e1tica.</p>' +
+        '<input type="file" id="bkfile" accept="application/json,.json,text/plain" style="display:none">';
+    },
+    bind: function(){
+      var dn = $('#bkdown');
+      if(dn) dn.addEventListener('click', function(){
+        vib();
+        if(baixarPacote()) flash('Arquivo gerado \u00b7 veja em Downloads');
+        else flash('N\u00e3o consegui gerar o arquivo. Use Copiar texto.');
+      });
+      var cp = $('#bkcopy');
+      if(cp) cp.addEventListener('click', function(){
+        vib();
+        var txt = pacoteTexto();
+        try {
+          navigator.clipboard.writeText(txt).then(function(){ flash('Texto copiado'); })
+            .catch(function(){ mostrarTexto(txt); });
+        } catch(e){ mostrarTexto(txt); }
+      });
+      function mostrarTexto(txt){
+        var ta = $('#bktxt'); if(!ta) return;
+        ta.value = txt;
+        try { ta.focus(); ta.select(); } catch(e){}
+        flash('Copie o texto da caixa abaixo');
+      }
+      var fi = $('#bkfile'), ob = $('#bkopen');
+      if(ob && fi){
+        ob.addEventListener('click', function(){ vib(); fi.click(); });
+        fi.addEventListener('change', function(){
+          var f = fi.files && fi.files[0];
+          if(!f) return;
+          var rd = new FileReader();
+          rd.onload = function(){ avisaImport(lerTexto(String(rd.result || ''))); paintStack(); };
+          rd.onerror = function(){ flash('N\u00e3o consegui ler o arquivo.'); };
+          rd.readAsText(f);
+          fi.value = '';
+        });
+      }
+      var pb = $('#bkpaste');
+      if(pb) pb.addEventListener('click', function(){
+        var ta = $('#bktxt'), v = ta ? String(ta.value || '').trim() : '';
+        vib();
+        if(!v) return flash('Cole o texto do backup na caixa.');
+        avisaImport(lerTexto(v));
+        paintStack();
+      });
+    }
   });
 }
 
