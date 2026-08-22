@@ -348,6 +348,13 @@ place-items:center;margin-bottom:22px}
 #fin h3{font-size:27px;font-weight:800;letter-spacing:-.03em;margin:0 0 10px}
 #fin p{font-size:15px;color:var(--ink2);line-height:1.6;margin:0 0 6px;max-width:340px;text-align:center}
 #fin .fbtn{margin-top:28px;max-width:300px;width:100%;flex:0 0 auto}
+.dlgerr{color:var(--bad);background:var(--badbg);border-radius:9px;padding:9px 11px;
+font-size:13px;line-height:1.5;margin:-6px 0 12px;text-align:left}
+#flash{position:fixed;left:16px;right:16px;bottom:calc(var(--sab) + 74px);z-index:95;
+background:var(--ink);color:var(--paper);border-radius:12px;padding:13px 15px;font-size:14px;
+font-weight:600;text-align:center;opacity:0;transform:translateY(10px);pointer-events:none;
+transition:opacity .22s,transform .22s}
+#flash.on{opacity:.96;transform:translateY(0)}
 
 /* ===== passos: título e descrição em linhas separadas ===== */
 .step{display:flex;gap:11px;align-items:flex-start;width:100%;background:var(--card);
@@ -656,6 +663,7 @@ border-radius:20px;padding:7px 12px;font-size:12px;font-weight:700;margin-right:
 
 <div id="dlg"></div>
 <div id="fin"></div>
+<div id="flash"></div>
 
 <nav id="tabs">
   <button data-v="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>Início</button>
@@ -2176,7 +2184,8 @@ function openTutorial(cfg){
   var it=BY[cfg.en];
   var rec=SAVED[cfg.id];
   if(!rec){ rec={id:cfg.id,en:cfg.en,k:cfg.k,have:cfg.have,shape:cfg.shape,res:cfg.res,labels:cfg.labels,done:{},note:'',ts:Date.now()}; }
-  if(cfg._done){ rec.done={}; for(var _dk in cfg._done){ if(cfg._done[_dk]) rec.done[_dk]=true; } }
+  rec.done = {};
+  if(cfg._done){ for(var _dk in cfg._done){ if(cfg._done[_dk]) rec.done[_dk]=true; } }
   rec.ts=Date.now();
   var G=buildGroups(cfg), total=0;
   G.forEach(function(gr){ if(gr.s) total+=gr.s.length; });
@@ -2832,7 +2841,7 @@ function openSWTut(a, sel, rep, opts) {
   var G = swGroups(a, sel, rep), total = 0;
   G.forEach(function (gr) { if (gr.s) total += gr.s.length; });
   S.progT = S.progT || {}; S.progT[a.id] = total;
-  if (opts.done) S.prog[a.id] = opts.done.slice();
+  S.prog[a.id] = opts.done ? opts.done.slice() : [];
   save();
   RUN = {
     p:'sw', title:a.n, k:a.k, total:total,
@@ -3317,9 +3326,9 @@ function openDiff() {
 
 function openAbout() {
   push({
-    t1: 'Sobre', t2: 'SimuGuia 3.5',
+    t1: 'Sobre', t2: 'SimuGuia 3.7',
     html: function () {
-      return '<table class="tbl"><tr><td>Versão</td><td>3.5</td></tr>' +
+      return '<table class="tbl"><tr><td>Versão</td><td>3.7</td></tr>' +
         '<tr><td>Conteúdo atualizado em</td><td>22/08/2026</td></tr>' +
         '<tr><td>Análises do Ansys</td><td>' + D.ANSYS.length + '</td></tr>' +
         '<tr><td>Estudos do SolidWorks</td><td>' + D.SW.length + '</td></tr>' +
@@ -3620,22 +3629,61 @@ function dlgShow(kind, inner){
 }
 function dlgClose(){ DLG = null; var d = $('#dlg'); d.classList.remove('on'); d.innerHTML = ''; }
 
-function askName(kind, def, cb){
+function askName(kind, def, cb, check){
   dlgShow(kind,
     '<h3>Salvar tutorial</h3>' +
     '<p>D\u00ea um nome para reconhecer este tutorial depois, na aba Salvos.</p>' +
     '<input id="dlgin" type="text" maxlength="60" value="' + E(def) + '">' +
+    '<p class="dlgerr" id="dlgerr" style="display:none"></p>' +
     '<div class="dlgb"><button class="btn" id="dlgno">Cancelar</button>' +
     '<button class="btn pri" id="dlgok">Salvar</button></div>');
   var inp = $('#dlgin');
   setTimeout(function(){ try { inp.focus(); inp.setSelectionRange(0, inp.value.length); } catch(e){} }, 90);
+  inp.addEventListener('input', function(){ $('#dlgerr').style.display = 'none'; });
   inp.addEventListener('keydown', function(ev){ if(ev.key === 'Enter'){ ev.preventDefault(); $('#dlgok').click(); } });
   $('#dlgno').addEventListener('click', function(){ vib(); dlgClose(); });
   $('#dlgok').addEventListener('click', function(){
     var v = String(inp.value || '').replace(/\s+/g, ' ').trim();
     if(!v) v = def;
+    if(check){
+      var err = check(v);
+      if(err){
+        var e1 = $('#dlgerr'); e1.textContent = err; e1.style.display = 'block';
+        vib(20); try { inp.focus(); } catch(e){}
+        return;
+      }
+    }
     dlgClose(); vib(12); cb(v);
   });
+}
+
+/* ---------- nomes: nunca dois iguais, nunca sobrepor outro salvo ---------- */
+function nomeOcupado(p, nome, exceto){
+  var achou = false, alvo = String(nome || '').trim().toLowerCase();
+  (SLOTS[p] || []).forEach(function(x){
+    if(x.u !== exceto && String(x.name || '').trim().toLowerCase() === alvo) achou = true;
+  });
+  return achou;
+}
+function nomeLivre(p, base){
+  base = String(base || '').trim() || 'Tutorial';
+  if(!nomeOcupado(p, base)) return base;
+  for(var i = 2; i < 100; i++){
+    var c = base + ' ' + (i < 10 ? '0' + i : i);
+    if(!nomeOcupado(p, c)) return c;
+  }
+  return base + ' ' + String(Date.now()).slice(-4);
+}
+
+/* ---------- avisinho de rodape ---------- */
+var flashT = null;
+function flash(msg){
+  var f = $('#flash');
+  if(!f) return;
+  f.textContent = msg;
+  f.classList.add('on');
+  if(flashT) clearTimeout(flashT);
+  flashT = setTimeout(function(){ f.classList.remove('on'); }, 2200);
 }
 
 /* ---------- rodape do tutorial: Salvar | Concluir ---------- */
@@ -3651,11 +3699,30 @@ function tutBindFoot(){
 
 function tutSaveDialog(exiting){
   if(!RUN) return;
-  askName(exiting ? 'nameout' : 'name', RUN.name || RUN.title, function(n){
-    putSlot(n);
-    if(exiting) tutLeave();
-    else toast('Guardado na aba Salvos.');
-  });
+  var jaSalvo = null;
+  if(RUN.uid) (SLOTS[RUN.p] || []).forEach(function(x){ if(x.u === RUN.uid) jaSalvo = x; });
+  /* veio da aba Salvos ou do Hist\u00f3rico: atualiza o pr\u00f3prio, s\u00f3 muda a data */
+  if(jaSalvo){ concluirSalvamento(jaSalvo.name, true); return; }
+  askName(exiting ? 'nameout' : 'name', nomeLivre(RUN.p, RUN.title),
+    function(n){ concluirSalvamento(n, false); },
+    function(n){
+      return nomeOcupado(RUN.p, n, RUN.uid)
+        ? 'J\u00e1 existe um tutorial salvo com esse nome. Escolha outro para n\u00e3o apagar o que est\u00e1 guardado.'
+        : null;
+    });
+}
+function concluirSalvamento(nome, atualizando){
+  var r = putSlot(nome);
+  if(RUN){ RUN.clear(); RUN = null; }
+  renderSaved();
+  goHome();
+  flash(atualizando ? '\u201c' + nome + '\u201d atualizado \u00b7 ' + horaCurta(r.ts)
+                    : 'Salvo como \u201c' + nome + '\u201d');
+}
+function horaCurta(ts){
+  var d = new Date(ts || Date.now());
+  function z(n){ return (n < 10 ? '0' : '') + n; }
+  return z(d.getDate()) + '/' + z(d.getMonth() + 1) + ' \u00e0s ' + z(d.getHours()) + ':' + z(d.getMinutes());
 }
 
 function putSlot(name){
@@ -3664,7 +3731,8 @@ function putSlot(name){
   var r = { u: RUN.uid || newUid(), p: RUN.p, name: name, title: RUN.title, k: RUN.k || '',
             cfg: RUN.cfg, done: RUN.keys(), total: RUN.total, ts: Date.now() };
   var i = -1; arr.forEach(function(x, ix){ if(x.u === r.u) i = ix; });
-  if(i >= 0) arr[i] = r; else arr.unshift(r);
+  if(i >= 0) arr.splice(i, 1);
+  arr.unshift(r);   /* o mais recente sempre no topo */
   RUN.uid = r.u; RUN.name = name; RUN.dirty = false;
   slotsSave(); renderSaved();
   return r;
@@ -3777,6 +3845,7 @@ function renderSaved() {
         '<button data-o="' + i + '" class="tx" style="background:none;flex:1">' +
         '<span class="n1">' + E(r.name) + '</span>' +
         '<span class="n2">' + E(r.title) + ' \u00b7 ' + dn + ' de ' + tot + ' passos \u00b7 ' + pc + '%</span>' +
+        '<span class="n2" style="color:var(--ink3);font-size:12px;margin-top:2px">Salvo em ' + dtxt(r.ts) + '</span>' +
         '<span class="pbar"><i style="width:' + pc + '%"></i></span></button>' +
         '<button class="ib" data-x="' + i + '" aria-label="Excluir">' + ITRASH + '</button></div>';
     }).join('');
